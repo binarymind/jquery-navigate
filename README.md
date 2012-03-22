@@ -9,18 +9,21 @@ The goal of the jQuery plugin Navigate is to
 
 project url : http://www.jquery-css.com/automatic-ajax-navigation
 
----------------------------------------------------------------------
-BASIC
----------------------------------------------------------------------
-simply include your <script type="text/javascript" src="url/to/navigate.js" ></script>
+## BASIC
+simply include your 
+```
+<script type="text/javascript" src="url/to/navigate.js" ></script>
+```
 after the include to jquery (1.7+)
 
-/******************************/
-/* CAUTION : all js in <head>  /
-/******************************/
 
-Navigate will ajax-navigate automaticaly any link :
+```CAUTION : all js in <head>  
+```
+
+### Navigate will ajax-navigate automaticaly any link :
+```
 <a href="myUrl" ajax-target="any selector" ajax-referrer="any selector" title="my title">link</a>
+```
 
 *  href : url to be used by the ajax call
 *  title : the future document title
@@ -28,47 +31,39 @@ Navigate will ajax-navigate automaticaly any link :
 *  ajax-referrer : (optional) the content will be inserted into the referrer element of the current page
 
 Note : by default ajax call will NOT be made if any of the following case is true
----------------------------------------------------------------------
 *  target=="_blank"
 *  has the class "noAjax"
 *  href=="javascript://"
 *  href contains "http"
 *  rel attribute == "external"
 
----------------------------------------------------------------------
-ADVANCED
----------------------------------------------------------------------
+## ADVANCED : onload and onUnload functions callbacks
+* ajax-onload :
 
-ajax-onload :
----------------------------------------------------------------------
-if the "ajax-target" element have an ajax-onload attribute, this javascript code is executed when the content is loaded.
+if the `ajax-target` element have an ajax-onload attribute, this javascript code is executed when the content is loaded.
 If the ajax-onload is a js function name, this function is called with the given options parameter usable at will :
-
+```
     {
     referrer : $("body") | $(referrer),
     currentState : state, //Balupton History.js state, See doc
     previousState : state, //Balupton History.js state, See doc
     clickedSelector : selector, //jQuery unique selector of the clicked element
     }
+```
+* ajax-onunload: 
 
-ajax-onunload: 
----------------------------------------------------------------------
-if the "ajax-target" element have an ajax-onunload attribute this javascript code will be executed when the user will change the history state.
+if the `ajax-target` element have an ajax-onunload attribute this javascript code will be executed when the user will change the history state.
 If the ajax-onunload is a js function name, this function is called with the given options parameter usable at will.
-
+```
     {
     referrer : $("body") | $(referrer),
     currentState : state, //Balupton History.js state, See doc
     previousState : state, //Balupton History.js state, See doc
     callback : callback, //HAVE TO EXECUTE WHEN UNLOAD COMPLETE options.callback();
     }
-
----------------------------------------------------------------------
-CREDITS
----------------------------------------------------------------------
+```
+## CREDITS
 Use of Modernizr and Balupton History.js (https://github.com/balupton/History.js)
 
----------------------------------------------------------------------
-EXAMPLES
----------------------------------------------------------------------
-http://www.dixseptieme.fr/?url=home
+## EXAMPLES
+<a href="http://www.dixseptieme.fr/?url=home" target="_blank">http://www.dixseptieme.fr/?url=home</a>
