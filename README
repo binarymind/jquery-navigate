@@ -9,6 +9,8 @@ The goal of the jQuery plugin Navigate is to
 *  Enable ajax-onLoad and ajax-onUnload function for each "Page" navigated for having cool transition
 *  Manage atomatically the History with those same onload/onunload function if existing
 
+project url : http://www.jquery-css/automatic-ajax-navigation
+
 ---------------------------------------------------------------------
 BASIC
 ---------------------------------------------------------------------
