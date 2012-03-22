@@ -65,3 +65,7 @@ If the ajax-onunload is a js function name, this function is called with the giv
     callback : callback, //HAVE TO EXECUTE WHEN UNLOAD COMPLETE options.callback();
     }
 
+---------------------------------------------------------------------
+CREDITS
+---------------------------------------------------------------------
+Use of Modernizr and Balupton History.js (https://github.com/balupton/History.js)
