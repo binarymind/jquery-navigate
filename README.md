@@ -25,17 +25,18 @@ after the include to jquery (1.7+)
 <a href="myUrl" ajax-target="any selector" ajax-referrer="any selector" title="my title">link</a>
 ```
 
-*  href : url to be used by the ajax call
-*  title : the future document title
-*  ajax-target : (optional) only the content of specified element in href's page will be inserted otherwise all body content
-*  ajax-referrer : (optional) the content will be inserted into the referrer element of the current page
+* href : url to be used by the ajax call
+* title : the future document title
+* ajax-target : (optional) only the content of specified element in href's page will be inserted otherwise all body content
+* ajax-referrer : (optional) the content will be inserted into the referrer element of the current page
 
 Note : by default ajax call will NOT be made if any of the following case is true
-*  target=="_blank"
-*  has the class "noAjax"
-*  href=="javascript://"
-*  href contains "http"
-*  rel attribute == "external"
+
+* target=="_blank"
+* has the class "noAjax"
+* href=="javascript://"
+* href contains "http"
+* rel attribute == "external"
 
 ## ADVANCED : onload and onUnload functions callbacks
 * ajax-onload :
