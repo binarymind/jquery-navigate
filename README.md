@@ -44,24 +44,24 @@ Note : by default ajax call will NOT be made if any of the following case is tru
 if the `ajax-target` element have an ajax-onload attribute, this javascript code is executed when the content is loaded.
 If the ajax-onload is a js function name, this function is called with the given options parameter usable at will :
 ```
-    {\
-    referrer : $("body") | $(referrer),\
-    currentState : state, //Balupton History.js state, See doc\
-    previousState : state, //Balupton History.js state, See doc\
-    clickedSelector : selector, //jQuery unique selector of the clicked element\
-    }\
+    { \
+    referrer : $("body") | $(referrer), \
+    currentState : state, //Balupton History.js state, See doc \
+    previousState : state, //Balupton History.js state, See doc \
+    clickedSelector : selector, //jQuery unique selector of the clicked element \
+    } \
 ```
 * ajax-onunload: 
 
 if the `ajax-target` element have an ajax-onunload attribute this javascript code will be executed when the user will change the history state.
 If the ajax-onunload is a js function name, this function is called with the given options parameter usable at will.
 ```
-    {\
-    referrer : $("body") | $(referrer),\
-    currentState : state, //Balupton History.js state, See doc\
-    previousState : state, //Balupton History.js state, See doc\
-    callback : callback, //HAVE TO EXECUTE WHEN UNLOAD COMPLETE options.callback();\
-    }\
+    { \
+    referrer : $("body") | $(referrer), \
+    currentState : state, //Balupton History.js state, See doc \
+    previousState : state, //Balupton History.js state, See doc \
+    callback : callback, //HAVE TO EXECUTE WHEN UNLOAD COMPLETE options.callback(); \
+    } \
 ```
 ## CREDITS
 Use of Modernizr and Balupton History.js (https://github.com/balupton/History.js)
