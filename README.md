@@ -46,12 +46,12 @@ if the `ajax-target` element have an ajax-onload attribute, this javascript code
 If the ajax-onload is a js function name, this function is called with the given options parameter usable at will :
 
 ```html
-    { \
-    referrer : $("body") | $(referrer), \
-    currentState : state, //Balupton History.js state, See doc \
-    previousState : state, //Balupton History.js state, See doc \
-    clickedSelector : selector, //jQuery unique selector of the clicked element \
-    } \
+    {
+    referrer : $("body") | $(referrer), 
+    currentState : state, //Balupton History.js state, See doc 
+    previousState : state, //Balupton History.js state, See doc 
+    clickedSelector : selector, //jQuery unique selector of the clicked element 
+    } 
 ```
 * ajax-onunload: 
 
@@ -59,12 +59,12 @@ if the `ajax-target` element have an ajax-onunload attribute this javascript cod
 If the ajax-onunload is a js function name, this function is called with the given options parameter usable at will.
 
 ```html
-    { \
-    referrer : $("body") | $(referrer), \
-    currentState : state, //Balupton History.js state, See doc \
-    previousState : state, //Balupton History.js state, See doc \
-    callback : callback, //HAVE TO EXECUTE WHEN UNLOAD COMPLETE options.callback(); \
-    } \
+    { 
+    referrer : $("body") | $(referrer), 
+    currentState : state, //Balupton History.js state, See doc 
+    previousState : state, //Balupton History.js state, See doc 
+    callback : callback, //HAVE TO EXECUTE WHEN UNLOAD COMPLETE options.callback(); 
+    } 
 ```
 ## CREDITS
 Use of Modernizr and Balupton History.js (https://github.com/balupton/History.js)
