@@ -69,3 +69,8 @@ If the ajax-onunload is a js function name, this function is called with the giv
 CREDITS
 ---------------------------------------------------------------------
 Use of Modernizr and Balupton History.js (https://github.com/balupton/History.js)
+
+---------------------------------------------------------------------
+EXAMPLES
+---------------------------------------------------------------------
+http://www.dixseptieme.fr/?url=home
