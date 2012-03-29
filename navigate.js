@@ -38,9 +38,9 @@ jQuery.navigate = {
 	   History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
 	   	 	var State = History.getState(false, false);
 			var reverse = History.getState().internal == false;
-			//get referrer and target
-	       	var referrer = State.data.referrer ? $(State.data.referrer) : $("body");
-	       	var target = State.data.target ? ' '+State.data.target : '';
+			//get target and content
+	       	var target = State.data.target ? $(State.data.target) : $("body");
+	       	var content = State.data.content ? ' '+State.data.content : '';
 	      	   	
 	        //get previous state
 	        var previousState = null;
@@ -69,7 +69,7 @@ jQuery.navigate = {
 			        		//onunload is a function name, give it the onload as parameter
 			        		onloadResult({
 			        			reverse : false,
-			        			referrer:State.data.referrer ? $(State.data.referrer) : $("body"),
+			        			target:State.data.target ? $(State.data.target) : $("body"),
 			        			currentState:State, 
 			        			clickedSelector:State.data.clickedSelector,
 			        			previousState:null
@@ -86,9 +86,9 @@ jQuery.navigate = {
 				    	History.loader=null;
 				    	var State = History.getState(false, false);
 				    	
-				    	//get referrer and target
-				       	var referrer = State.data.referrer ? $(State.data.referrer) : $("body");
-				       	var target = State.data.target ? ' '+State.data.target : '';
+				    	//get target and content
+				       	var target = State.data.target ? $(State.data.target) : $("body");
+				       	var content = State.data.content ? ' '+State.data.content : '';
 				       	
 				       	//Remove the body tag not to load all scripts and header of the loaded page
 				       	//-------------------------------------------------------------------------
@@ -101,9 +101,9 @@ jQuery.navigate = {
 	    	
 						check=check[0].replace(/^<body/, '<div');
 						check=check.replace(/body>$/, 'div>');
-						//get the wanted target
-						if(typeof State.data.target != 'undefined' &&  State.data.target) {
-							var element=$(State.data.target, '<div>'+check+'</div>');//check).find(State.data.target);
+						//get the wanted content
+						if(typeof State.data.content != 'undefined' &&  State.data.content) {
+							var element=$(State.data.content, '<div>'+check+'</div>');//check).find(State.data.content);
 							var myHtml = element.html();
 						} else {
 							var element=$(check);
@@ -113,16 +113,16 @@ jQuery.navigate = {
 						
 						if(!myHtml) return;
 						
-						//insert content into the referrer    
-		            	var myReferrer = referrer.last(); 
-		            	myReferrer.html(myHtml);
+						//insert content into the target    
+		            	var myTarget = target.last(); 
+		            	myTarget.html(myHtml);
 		            	
-		            	myReferrer.find($.navigate.ajaxLinks).each(function(){
+		            	myTarget.find($.navigate.ajaxLinks).each(function(){
 		            		$(this).discreteClick();
 		            	});
 				    	
 		            	if(element.attr("class"))
-	    					referrer.attr("class", element.attr("class"));
+	    					target.attr("class", element.attr("class"));
 		            	
 		            	//get the onload and onunload functions of this state
 			            var onload = element.attr("ajax-onload");
@@ -139,7 +139,7 @@ jQuery.navigate = {
 				        		//onunload is a function name, give it the onload as parameter
 				        		onloadResult({
 				        			reverse : reverse,
-				        			referrer:State.data.referrer ? $(State.data.referrer) : $("body"),
+				        			target:State.data.target ? $(State.data.target) : $("body"),
 				        			currentState:State, 
 				        			clickedSelector:State.data.clickedSelector,
 				        			previousState:previousState
@@ -159,7 +159,7 @@ jQuery.navigate = {
 					//onunload is a function name, give it the onload as parameter
 	        		onUnloadResult({
 	        			reverse : reverse,
-	        			referrer:typeof previousState.data.referrer != "undefined" ? $(previousState.data.referrer) : null, 
+	        			target:typeof previousState.data.target != "undefined" ? $(previousState.data.target) : null, 
 	        			currentState:State, 
 	        			clickedSelector:previousState.data.clickedSelector,
 	        			previousState:previousState, 
@@ -208,26 +208,26 @@ jQuery.navigate = {
 	
 	/**
 	 * This function navigate in ajax thanks to the data of this element
-	 * referrer : the jquery selector in which we insert the data
+	 * target : the jquery selector in which we insert the data
 	 * href : the url from which we take the data
-	 * target : the jquery selector in the href page from which we take the data
+	 * content : the jquery selector in the href page from which we take the data
 	 * title : the page new title
 	 **/
 	$.fn.navigate = function(e){
 		var me = $(this);
 		var rel = me.attr("rel");
 		
-		/* get the ajax target */
-		var target = me.attr('ajax-target');
-		if(!target) target = me.attr("target");
+		/* get the ajax content */
+		var content = me.attr('ajax-content');
+		if(!content) content = me.attr("content");
 		
 		/* get the href */
 		var href=me.attr('ajax-href');
 		if(!href) href=me.attr('href');
 		
-		/* get the referrer */
-		var referrer = me.attr('ajax-referrer');
-		if(!referrer) me.attr("referrer");
+		/* get the target */
+		var target = me.attr('ajax-target');
+		if(!target) me.attr("target");
 		
 		/* get the title */
 		var title = me.attr('title');
@@ -241,8 +241,8 @@ jQuery.navigate = {
         if(href=="javascript://") {return true;}
    	 	History.pushState(
 			{
-				referrer:referrer, 
 				target:target, 
+				content:content, 
 				clickedSelector:me.getSelector()
 			}, 
 			title, href
