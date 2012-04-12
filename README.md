@@ -29,8 +29,13 @@ after the include to jquery (1.7+)
 * title : the future document title
 * ajax-content : (optional) only the content of specified element in href's page will be inserted otherwise all body content
 * ajax-target : (optional) the content will be inserted into the target element of the current page
+* ajax-section : (optional) any vaue : usefull to force the loading of the full body content if this value is different between pages
 
-Note : by default ajax call will NOT be made if any of the following case is true
+### Notes : 
+
+If between two pages the `ajax-target` or `ajax-section` is different, we load the full body content into the full body content.
+
+by default ajax call will NOT be made if any of the following case is true
 
 * target=="_blank"
 * has the class "noAjax"

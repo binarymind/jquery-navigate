@@ -47,6 +47,7 @@ jQuery.navigate = {
 	        if(History.savedStates.length>1)
 	        	previousState = History.getStateByIndex(-2);
 	        
+
 	        //function to load new state
 	        var loadNewState = function() {
 	        	if(History.loader) {History.loader.abort();}
@@ -57,7 +58,7 @@ jQuery.navigate = {
 	        		//get the onload and onunload functions of this state
 		            var onload = State.data.onload;
 		            var onunload = State.data.onunload;
-    				
+    					
     				//transform clicks to discrete clicks
     				$("body").find($.navigate.ajaxLinks).each(function(){
 	            		$(this).discreteClick();
@@ -78,6 +79,7 @@ jQuery.navigate = {
 					}
 					return;
 	        	}
+	        	
 	        	History.loader = $.ajax({
 				    type: "GET",
 				    url: State.url,
@@ -86,10 +88,29 @@ jQuery.navigate = {
 				    	History.loader=null;
 				    	var State = History.getState(false, false);
 				    	
-				    	//get target and content
-				       	var target = State.data.target ? $(State.data.target) : $("body");
+				    	//get previous state
+				        var previousState = null;
+				        if(History.savedStates.length>1)
+				        	previousState = History.getStateByIndex(-2);
+				        
+				        //get insert function
+						var insertFunction = 'html';
+						if(typeof State.data.insert != "undefined" && State.data.insert != null)
+								var insertFunction = State.data.insert;
+
+						//get target and content
+				       	var target = State.data.target ? $(State.data.target).last() : $("body");
 				       	var content = State.data.content ? ' '+State.data.content : '';
-				       	
+						
+
+				       	//If we want to insert content into a different target or if we are in a ddifferent section, get full content and insert it into full body
+			       		if((typeof previousState.data.target !="undefined" && previousState.data.target != State.data.target)
+			       		||(typeof previousState.data.section !="undefined" && previousState.data.section != State.data.section)) {
+			       			target = $('body');
+			       			content="";
+			       			insertFunction='html';
+			       		}
+			       	
 				       	//Remove the body tag not to load all scripts and header of the loaded page
 				       	//-------------------------------------------------------------------------
 				       	var re = /<body[\s\S]*\/body>/;
@@ -101,9 +122,10 @@ jQuery.navigate = {
 	    	
 						check=check[0].replace(/^<body/, '<div');
 						check=check.replace(/body>$/, 'div>');
+
 						//get the wanted content
-						if(typeof State.data.content != 'undefined' &&  State.data.content) {
-							var element=$(State.data.content, '<div>'+check+'</div>');//check).find(State.data.content);
+						if(typeof content != 'undefined' &&  content) {
+							var element=$(content, '<div>'+check+'</div>');//check).find(State.data.content);
 							var myHtml = element.html();
 						} else {
 							var element=$(check);
@@ -112,15 +134,16 @@ jQuery.navigate = {
 						}
 						
 						if(!myHtml) return;
-						
-						//insert content into the target    
-		            	var myTarget = target.last(); 
-		            	myTarget.html(myHtml);
+
+						//insert content into the target or body if the section is different    
+		            	target[insertFunction](myHtml);
 		            	
-		            	myTarget.find($.navigate.ajaxLinks).each(function(){
+		            	//apply discreteClick on inserted content
+		            	target.find($.navigate.ajaxLinks).each(function(){
 		            		$(this).discreteClick();
 		            	});
-				    	
+
+		            	//Give target new class
 		            	if(element.attr("class"))
 	    					target.attr("class", element.attr("class"));
 		            	
@@ -139,7 +162,7 @@ jQuery.navigate = {
 				        		//onunload is a function name, give it the onload as parameter
 				        		onloadResult({
 				        			reverse : reverse,
-				        			target:State.data.target ? $(State.data.target) : $("body"),
+				        			target:target,
 				        			currentState:State, 
 				        			clickedSelector:State.data.clickedSelector,
 				        			previousState:previousState
@@ -184,7 +207,8 @@ jQuery.navigate = {
 	     //push the first state
 	     History.pushState({
 	     	onload:$("body").attr("ajax-onload"),
-	     	onunload:$("body").attr("ajax-onunload")
+	     	onunload:$("body").attr("ajax-onunload"),
+	     	insert:'html'
 	     });
 	}
 };
@@ -233,16 +257,27 @@ jQuery.navigate = {
 		var title = me.attr('title');
 		if(!title) title=null;
 		
+		/* get the section */
+		var section = me.attr('ajax-section');
+		if(!section) section=null;
+
+		/* get the insert method */
+		var insert = me.attr('ajax-insert');
+		if(!insert) insert="html";
+				       	
 		//ie add the absolute location on href attribute
 		var base = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
 		href = href.replace(base, ""); 
 		
 		//don't do anything on links with rel="external" or target = blank or target of potential other domain
         if(href=="javascript://") {return true;}
+			
    	 	History.pushState(
 			{
 				target:target, 
 				content:content, 
+				insert:insert,
+				section:section,
 				clickedSelector:me.getSelector()
 			}, 
 			title, href
