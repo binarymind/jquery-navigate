@@ -4,7 +4,10 @@ if(typeof Modernizr =='undefined') {
 	 */
 	window.Modernizr=function(a,b,c){function v(a){j.cssText=a}function w(a,b){return v(prefixes.join(a+";")+(b||""))}function x(a,b){return typeof a===b}function y(a,b){return!!~(""+a).indexOf(b)}function z(a,b,d){for(var e in a){var f=b[a[e]];if(f!==c)return d===!1?a[e]:x(f,"function")?f.bind(d||b):f}return!1}function A(){e.inputtypes=function(a){for(var d=0,e,f,h,i=a.length;d<i;d++)k.setAttribute("type",f=a[d]),e=k.type!=="text",e&&(k.value=l,k.style.cssText="position:absolute;visibility:hidden;",/^range$/.test(f)&&k.style.WebkitAppearance!==c?(g.appendChild(k),h=b.defaultView,e=h.getComputedStyle&&h.getComputedStyle(k,null).WebkitAppearance!=="textfield"&&k.offsetHeight!==0,g.removeChild(k)):/^(search|tel)$/.test(f)||(/^(url|email)$/.test(f)?e=k.checkValidity&&k.checkValidity()===!1:/^color$/.test(f)?(g.appendChild(k),g.offsetWidth,e=k.value!=l,g.removeChild(k)):e=k.value!=l)),o[a[d]]=!!e;return o}("search tel url email datetime date month week time datetime-local number range color".split(" "))}var d="2.5.3",e={},f=!0,g=b.documentElement,h="modernizr",i=b.createElement(h),j=i.style,k=b.createElement("input"),l=":)",m={}.toString,n={},o={},p={},q=[],r=q.slice,s,t={}.hasOwnProperty,u;!x(t,"undefined")&&!x(t.call,"undefined")?u=function(a,b){return t.call(a,b)}:u=function(a,b){return b in a&&x(a.constructor.prototype[b],"undefined")},Function.prototype.bind||(Function.prototype.bind=function(b){var c=this;if(typeof c!="function")throw new TypeError;var d=r.call(arguments,1),e=function(){if(this instanceof e){var a=function(){};a.prototype=c.prototype;var f=new a,g=c.apply(f,d.concat(r.call(arguments)));return Object(g)===g?g:f}return c.apply(b,d.concat(r.call(arguments)))};return e}),n.history=function(){return!!a.history&&!!history.pushState};for(var B in n)u(n,B)&&(s=B.toLowerCase(),e[s]=n[B](),q.push((e[s]?"":"no-")+s));return e.input||A(),v(""),i=k=null,function(a,b){function g(a,b){var c=a.createElement("p"),d=a.getElementsByTagName("head")[0]||a.documentElement;return c.innerHTML="x<style>"+b+"</style>",d.insertBefore(c.lastChild,d.firstChild)}function h(){var a=k.elements;return typeof a=="string"?a.split(" "):a}function i(a){var b={},c=a.createElement,e=a.createDocumentFragment,f=e();a.createElement=function(a){var e=(b[a]||(b[a]=c(a))).cloneNode();return k.shivMethods&&e.canHaveChildren&&!d.test(a)?f.appendChild(e):e},a.createDocumentFragment=Function("h,f","return function(){var n=f.cloneNode(),c=n.createElement;h.shivMethods&&("+h().join().replace(/\w+/g,function(a){return b[a]=c(a),f.createElement(a),'c("'+a+'")'})+");return n}")(k,f)}function j(a){var b;return a.documentShived?a:(k.shivCSS&&!e&&(b=!!g(a,"article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}audio{display:none}canvas,video{display:inline-block;*display:inline;*zoom:1}[hidden]{display:none}audio[controls]{display:inline-block;*display:inline;*zoom:1}mark{background:#FF0;color:#000}")),f||(b=!i(a)),b&&(a.documentShived=b),a)}var c=a.html5||{},d=/^<|^(?:button|form|map|select|textarea)$/i,e,f;(function(){var a=b.createElement("a");a.innerHTML="<xyz></xyz>",e="hidden"in a,f=a.childNodes.length==1||function(){try{b.createElement("a")}catch(a){return!0}var c=b.createDocumentFragment();return typeof c.cloneNode=="undefined"||typeof c.createDocumentFragment=="undefined"||typeof c.createElement=="undefined"}()})();var k={elements:c.elements||"abbr article aside audio bdi canvas data datalist details figcaption figure footer header hgroup mark meter nav output progress section summary time video",shivCSS:c.shivCSS!==!1,shivMethods:c.shivMethods!==!1,type:"default",shivDocument:j};a.html5=k,j(b)}(this,b),e._version=d,g.className=g.className.replace(/(^|\s)no-js(\s|$)/,"$1$2")+(f?" js "+q.join(" "):""),e}(this,this.document),function(a,b,c){function d(a){return o.call(a)=="[object Function]"}function e(a){return typeof a=="string"}function f(){}function g(a){return!a||a=="loaded"||a=="complete"||a=="uninitialized"}function h(){var a=p.shift();q=1,a?a.t?m(function(){(a.t=="c"?B.injectCss:B.injectJs)(a.s,0,a.a,a.x,a.e,1)},0):(a(),h()):q=0}function i(a,c,d,e,f,i,j){function k(b){if(!o&&g(l.readyState)&&(u.r=o=1,!q&&h(),l.onload=l.onreadystatechange=null,b)){a!="img"&&m(function(){t.removeChild(l)},50);for(var d in y[c])y[c].hasOwnProperty(d)&&y[c][d].onload()}}var j=j||B.errorTimeout,l={},o=0,r=0,u={t:d,s:c,e:f,a:i,x:j};y[c]===1&&(r=1,y[c]=[],l=b.createElement(a)),a=="object"?l.data=c:(l.src=c,l.type=a),l.width=l.height="0",l.onerror=l.onload=l.onreadystatechange=function(){k.call(this,r)},p.splice(e,0,u),a!="img"&&(r||y[c]===2?(t.insertBefore(l,s?null:n),m(k,j)):y[c].push(l))}function j(a,b,c,d,f){return q=0,b=b||"j",e(a)?i(b=="c"?v:u,a,b,this.i++,c,d,f):(p.splice(this.i++,0,a),p.length==1&&h()),this}function k(){var a=B;return a.loader={load:j,i:0},a}var l=b.documentElement,m=a.setTimeout,n=b.getElementsByTagName("script")[0],o={}.toString,p=[],q=0,r="MozAppearance"in l.style,s=r&&!!b.createRange().compareNode,t=s?l:n.parentNode,l=a.opera&&o.call(a.opera)=="[object Opera]",l=!!b.attachEvent&&!l,u=r?"object":l?"script":"img",v=l?"script":u,w=Array.isArray||function(a){return o.call(a)=="[object Array]"},x=[],y={},z={timeout:function(a,b){return b.length&&(a.timeout=b[0]),a}},A,B;B=function(a){function b(a){var a=a.split("!"),b=x.length,c=a.pop(),d=a.length,c={url:c,origUrl:c,prefixes:a},e,f,g;for(f=0;f<d;f++)g=a[f].split("="),(e=z[g.shift()])&&(c=e(c,g));for(f=0;f<b;f++)c=x[f](c);return c}function g(a,e,f,g,i){var j=b(a),l=j.autoCallback;j.url.split(".").pop().split("?").shift(),j.bypass||(e&&(e=d(e)?e:e[a]||e[g]||e[a.split("/").pop().split("?")[0]]||h),j.instead?j.instead(a,e,f,g,i):(y[j.url]?j.noexec=!0:y[j.url]=1,f.load(j.url,j.forceCSS||!j.forceJS&&"css"==j.url.split(".").pop().split("?").shift()?"c":c,j.noexec,j.attrs,j.timeout),(d(e)||d(l))&&f.load(function(){k(),e&&e(j.origUrl,i,g),l&&l(j.origUrl,i,g),y[j.url]=2})))}function i(a,b){function c(a,c){if(a){if(e(a))c||(j=function(){var a=[].slice.call(arguments);k.apply(this,a),l()}),g(a,j,b,0,h);else if(Object(a)===a)for(n in m=function(){var b=0,c;for(c in a)a.hasOwnProperty(c)&&b++;return b}(),a)a.hasOwnProperty(n)&&(!c&&!--m&&(d(j)?j=function(){var a=[].slice.call(arguments);k.apply(this,a),l()}:j[n]=function(a){return function(){var b=[].slice.call(arguments);a&&a.apply(this,b),l()}}(k[n])),g(a[n],j,b,n,h))}else!c&&l()}var h=!!a.test,i=a.load||a.both,j=a.callback||f,k=j,l=a.complete||f,m,n;c(h?a.yep:a.nope,!!i),i&&c(i)}var j,l,m=this.yepnope.loader;if(e(a))g(a,0,m,0);else if(w(a))for(j=0;j<a.length;j++)l=a[j],e(l)?g(l,0,m,0):w(l)?B(l):Object(l)===l&&i(l,m);else Object(a)===a&&i(a,m)},B.addPrefix=function(a,b){z[a]=b},B.addFilter=function(a){x.push(a)},B.errorTimeout=1e4,b.readyState==null&&b.addEventListener&&(b.readyState="loading",b.addEventListener("DOMContentLoaded",A=function(){b.removeEventListener("DOMContentLoaded",A,0),b.readyState="complete"},0)),a.yepnope=k(),a.yepnope.executeStack=h,a.yepnope.injectJs=function(a,c,d,e,i,j){var k=b.createElement("script"),l,o,e=e||B.errorTimeout;k.src=a;for(o in d)k.setAttribute(o,d[o]);c=j?h:c||f,k.onreadystatechange=k.onload=function(){!l&&g(k.readyState)&&(l=1,c(),k.onload=k.onreadystatechange=null)},m(function(){l||(l=1,c(1))},e),i?k.onload():n.parentNode.insertBefore(k,n)},a.yepnope.injectCss=function(a,c,d,e,g,i){var e=b.createElement("link"),j,c=i?h:c||f;e.href=a,e.rel="stylesheet",e.type="text/css";for(j in d)e.setAttribute(j,d[j]);g||(n.parentNode.insertBefore(e,n),m(c,0))}}(this,document),Modernizr.load=function(){yepnope.apply(window,[].slice.call(arguments,0))};
 }
-jQuery.navigate = {init:function() {}};
+jQuery.navigate = {init:function() {
+	var onloadResult = eval($("body").attr("ajax-onload"));
+	if(typeof onloadResult =="function") onloadResult();
+}};
 
 // for now ajax navigate only if history is taken in charge by html5
 if(Modernizr.history) {
@@ -21,270 +24,270 @@ if(Modernizr.history) {
 	/* History html4 */
 	(function(a,b){"use strict";var c=a.document,d=a.setTimeout||d,e=a.clearTimeout||e,f=a.setInterval||f,g=a.History=a.History||{};if(typeof g.initHtml4!="undefined")throw new Error("History.js HTML4 Support has already been loaded...");g.initHtml4=function(){if(typeof g.initHtml4.initialized!="undefined")return!1;g.initHtml4.initialized=!0,g.enabled=!0,g.savedHashes=[],g.isLastHash=function(a){var b=g.getHashByIndex(),c;c=a===b;return c},g.saveHash=function(a){if(g.isLastHash(a))return!1;g.savedHashes.push(a);return!0},g.getHashByIndex=function(a){var b=null;typeof a=="undefined"?b=g.savedHashes[g.savedHashes.length-1]:a<0?b=g.savedHashes[g.savedHashes.length+a]:b=g.savedHashes[a];return b},g.discardedHashes={},g.discardedStates={},g.discardState=function(a,b,c){var d=g.getHashByState(a),e;e={discardedState:a,backState:c,forwardState:b},g.discardedStates[d]=e},g.discardHash=function(a,b,c){var d={discardedHash:a,backState:c,forwardState:b};g.discardedHashes[a]=d},g.discardedState=function(a){var b=g.getHashByState(a),c;c=g.discardedStates[b]||!1;return c},g.discardedHash=function(a){var b=g.discardedHashes[a]||!1;return b},g.recycleState=function(a){var b=g.getHashByState(a);g.discardedState(a)&&delete g.discardedStates[b]},g.emulated.hashChange&&(g.hashChangeInit=function(){g.checkerFunction=null;var b="",d,e,h,i;g.isInternetExplorer()?(d="historyjs-iframe",e=c.createElement("iframe"),e.setAttribute("id",d),e.style.display="none",c.body.appendChild(e),e.contentWindow.document.open(),e.contentWindow.document.close(),h="",i=!1,g.checkerFunction=function(){var c,d;if(i)return!1;i=!0,c=g.getHash()||"",d=g.unescapeHash(e.contentWindow.document.location.hash)||"",c!==b?(b=c,d!==c&&(h=d=c,e.contentWindow.document.open(),e.contentWindow.document.close(),e.contentWindow.document.location.hash=g.escapeHash(c)),g.Adapter.trigger(a,"hashchange")):d!==h&&(h=d,g.setHash(d,!1)),i=!1;return!0}):g.checkerFunction=function(){var c=g.getHash();c!==b&&(b=c,g.Adapter.trigger(a,"hashchange"));return!0},g.intervalList.push(f(g.checkerFunction,g.options.hashChangeInterval));return!0},g.Adapter.onDomLoad(g.hashChangeInit)),g.emulated.pushState&&(g.onHashChange=function(b){var d=b&&b.newURL||c.location.href,e=g.getHashByUrl(d),f=null,h=null,i=null,j;if(g.isLastHash(e)){g.busy(!1);return!1}g.doubleCheckComplete(),g.saveHash(e);if(e&&g.isTraditionalAnchor(e)){g.Adapter.trigger(a,"anchorchange"),g.busy(!1);return!1}f=g.extractState(g.getFullUrl(e||c.location.href,!1),!0);if(g.isLastSavedState(f)){g.busy(!1);return!1}h=g.getHashByState(f),j=g.discardedState(f);if(j){g.getHashByIndex(-2)===g.getHashByState(j.forwardState)?g.back(!1):g.forward(!1);return!1}g.busy(!0),g.addState(f.data,f.title,f.url);return!0},g.Adapter.bind(a,"hashchange",g.onHashChange),g.addState=function(b,d,e,f){var h=g.createStateObject(b,d,e),i=g.getHashByState(h),j=g.getState(!1),k=g.getHashByState(j),l=g.getHash(),m;f==="replaceState"&&(m=g.getStateByIndex(-2),g.discardState(j,h,m)),g.storeState(h),g.expectedStateId=h.id,g.recycleState(h),g.setTitle(h);if(i===k)g.debug("History.pushState: no change",i),g.temp.same=!0;else{if(i!==l&&i!==g.getShortUrl(c.location.href)){g.debug("History.pushState: update hash",i,l),g.setHash(i,!1);return!1}g.saveState(h);if(g.temp.ignore){--g.temp.ignore,g.busy(!1);return!1}g.temp.same=!1}g.Adapter.trigger(a,"statechange"),g.busy(!1);return!0},g.pushState=function(a,b,c,d){if(d!==!1&&g.busy()){g.pushQueue({scope:g,callback:g.pushState,args:arguments,queue:d});return!1}g.busy(!0),g.temp.internal=d!==!1?"pushState":!1;return g.addState(a,b,c,"pushState")},g.replaceState=function(a,b,c,d){if(g.getHashByUrl(c))throw new Error("History.js does not support states with fragement-identifiers (hashes/anchors).");if(d!==!1&&g.busy()){g.pushQueue({scope:g,callback:g.replaceState,args:arguments,queue:d});return!1}g.busy(!0),g.temp.internal=d!==!1?"replaceState":!1;return g.addState(a,b,c,"replaceState")},g.getHash()&&!g.emulated.hashChange&&g.Adapter.onDomLoad(function(){g.Adapter.trigger(a,"hashchange")}))},g.init()})(window);
 
-jQuery.navigate = {
-	ajaxLinks : 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink',
-	init:function() {
-		// Prepare HISTORY
-	    var History = window.History; // Note: We are using a capital H instead of a lower h
-	    if ( !History.enabled ) {
-	         // History.js is disabled for this browser.
-	         // This is because we can optionally choose to support HTML4 browsers or not.
-	        return false;
-	    }
-		//ajax loader
-		History.loader = null;
-		
-	    // Bind to StateChange Event
-	   History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
-	   	 	var State = History.getState(false, false);
-			var reverse = History.getState().internal == false;
-			//get target and content
-	       	var target = State.data.target ? $(State.data.target) : $("body");
-	       	var content = State.data.content ? ' '+State.data.content : '';
-	      	   	
-	        //get previous state
-	        var previousState = null;
-	        if(History.savedStates.length>1)
-	        	previousState = History.getStateByIndex(-2);
-	        
+	jQuery.navigate = {
+		ajaxLinks : 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink',
+		init:function() {
+			// Prepare HISTORY
+		    var History = window.History; // Note: We are using a capital H instead of a lower h
+		    if ( !History.enabled ) {
+		         // History.js is disabled for this browser.
+		         // This is because we can optionally choose to support HTML4 browsers or not.
+		        return false;
+		    }
+			//ajax loader
+			History.loader = null;
+			
+		    // Bind to StateChange Event
+		   History.Adapter.bind(window,'statechange',function(){ // Note: We are using statechange instead of popstate
+		   	 	var State = History.getState(false, false);
+				var reverse = History.getState().internal == false;
+				//get target and content
+		       	var target = State.data.target ? $(State.data.target) : $("body");
+		       	var content = State.data.content ? ' '+State.data.content : '';
+		      	   	
+		        //get previous state
+		        var previousState = null;
+		        if(History.savedStates.length>1)
+		        	previousState = History.getStateByIndex(-2);
+		        
 
-	        //function to load new state
-	        var loadNewState = function() {
-	        	if(History.loader) {History.loader.abort();}
-	        	//load the content  
-	        	if(previousState ==null) {
-	        		//first load
-	        		//--------------------------------------------------------
-	        		//get the onload and onunload functions of this state
-		            var onload = State.data.onload;
-		            var onunload = State.data.onunload;
-    					
-    				//transform clicks to discrete clicks
-    				$("body").find($.navigate.ajaxLinks).each(function(){
-	            		$(this).discreteClick();
-	            	});
-    				//eval the onload
-					if(onload) {
-						var onloadResult = eval(State.data.onload);
-			        	if(typeof onloadResult =="function") {
-			        		//onunload is a function name, give it the onload as parameter
-			        		onloadResult({
-			        			reverse : false,
-			        			target:State.data.target ? $(State.data.target) : $("body"),
-			        			currentState:State, 
-			        			clickedSelector:State.data.clickedSelector,
-			        			previousState:null
-			        		});
-			        	} 	
-					}
-					return;
-	        	}
-	        	
-	        	History.loader = $.ajax({
-				    type: "GET",
-				    url: State.url,
-				    dataType: "html",
-				    success: function(data) {
-				    	History.loader=null;
-				    	var State = History.getState(false, false);
-				    	
-				    	//get previous state
-				        var previousState = null;
-				        if(History.savedStates.length>1)
-				        	previousState = History.getStateByIndex(-2);
-				        
-				        //get insert function
-						var insertFunction = 'html';
-						if(typeof State.data.insert != "undefined" && State.data.insert != null)
-								var insertFunction = State.data.insert;
-
-						//get target and content
-				       	var target = State.data.target ? $(State.data.target).last() : $("body");
-				       	var content = State.data.content ? ' '+State.data.content : '';
-						
-
-				       	//If we want to insert content into a different target or if we are in a ddifferent section, get full content and insert it into full body
-			       		if((typeof previousState.data.target !="undefined" && previousState.data.target != State.data.target)
-			       		||(typeof previousState.data.section !="undefined" && previousState.data.section != State.data.section)) {
-			       			target = $('body');
-			       			content="";
-			       			insertFunction='html';
-			       		}
-			       	
-				       	//Remove the body tag not to load all scripts and header of the loaded page
-				       	//-------------------------------------------------------------------------
-				       	var re = /<body[\s\S]*\/body>/;
-						var check=data.match(re);
-						if(!check || check.length==0) {
-							alert('no body tag inside the page '+State.url);
-							return false;
-						}
-	    	
-						check=check[0].replace(/^<body/, '<div');
-						check=check.replace(/body>$/, 'div>');
-
-						//get the wanted content
-						if(typeof content != 'undefined' &&  content) {
-							var element=$(content, '<div>'+check+'</div>');//check).find(State.data.content);
-							var myHtml = element.html();
-						} else {
-							var element=$(check);
-							//var myHtml = check;
-							var myHtml = element.html();
-						}
-						
-						if(!myHtml) return;
-
-						//insert content into the target or body if the section is different    
-		            	target[insertFunction](myHtml);
-		            	
-		            	//apply discreteClick on inserted content
-		            	target.find($.navigate.ajaxLinks).each(function(){
+		        //function to load new state
+		        var loadNewState = function() {
+		        	if(History.loader) {History.loader.abort();}
+		        	//load the content  
+		        	if(previousState ==null) {
+		        		//first load
+		        		//--------------------------------------------------------
+		        		//get the onload and onunload functions of this state
+			            var onload = State.data.onload;
+			            var onunload = State.data.onunload;
+	    					
+	    				//transform clicks to discrete clicks
+	    				$("body").find($.navigate.ajaxLinks).each(function(){
 		            		$(this).discreteClick();
 		            	});
-
-		            	//Give target new class
-		            	if(element.attr("class"))
-	    					target.attr("class", element.attr("class"));
-		            	
-		            	//get the onload and onunload functions of this state
-			            var onload = element.attr("ajax-onload");
-			            var onunload = element.attr("ajax-onunload");
-						
-						//record them	
-			            if(onload) State.data.onload =onload;
-			            if(onunload) State.data.onunload =onunload;
-	    
-						//eval the onload
+	    				//eval the onload
 						if(onload) {
 							var onloadResult = eval(State.data.onload);
 				        	if(typeof onloadResult =="function") {
 				        		//onunload is a function name, give it the onload as parameter
 				        		onloadResult({
-				        			reverse : reverse,
-				        			target:target,
+				        			reverse : false,
+				        			target:State.data.target ? $(State.data.target) : $("body"),
 				        			currentState:State, 
 				        			clickedSelector:State.data.clickedSelector,
-				        			previousState:previousState
+				        			previousState:null
 				        		});
 				        	} 	
 						}
-				    }
-				});
+						return;
+		        	}
 		        	
-	        };
-					
-	        //Unload the previous state
-			//-------------------------
-	        if(previousState && previousState.data.onunload) {
-	        	var onUnloadResult = eval(previousState.data.onunload);
-	        	if(typeof onUnloadResult =="function") {
-					//onunload is a function name, give it the onload as parameter
-	        		onUnloadResult({
-	        			reverse : reverse,
-	        			target:typeof previousState.data.target != "undefined" ? $(previousState.data.target) : null, 
-	        			currentState:State, 
-	        			clickedSelector:previousState.data.clickedSelector,
-	        			previousState:previousState, 
-	        			callback:loadNewState
-	        		});
-	        	} else {
-					//we executed the onunload with the eval, thus execute the onload
+		        	History.loader = $.ajax({
+					    type: "GET",
+					    url: State.url,
+					    dataType: "html",
+					    success: function(data) {
+					    	History.loader=null;
+					    	var State = History.getState(false, false);
+					    	
+					    	//get previous state
+					        var previousState = null;
+					        if(History.savedStates.length>1)
+					        	previousState = History.getStateByIndex(-2);
+					        
+					        //get insert function
+							var insertFunction = 'html';
+							if(typeof State.data.insert != "undefined" && State.data.insert != null)
+									var insertFunction = State.data.insert;
+
+							//get target and content
+					       	var target = State.data.target ? $(State.data.target).last() : $("body");
+					       	var content = State.data.content ? ' '+State.data.content : '';
+							
+
+					       	//If we want to insert content into a different target or if we are in a ddifferent section, get full content and insert it into full body
+				       		if((typeof previousState.data.target !="undefined" && previousState.data.target != State.data.target)
+				       		||(typeof previousState.data.section !="undefined" && previousState.data.section != State.data.section)) {
+				       			target = $('body');
+				       			content="";
+				       			insertFunction='html';
+				       		}
+				       	
+					       	//Remove the body tag not to load all scripts and header of the loaded page
+					       	//-------------------------------------------------------------------------
+					       	var re = /<body[\s\S]*\/body>/;
+							var check=data.match(re);
+							if(!check || check.length==0) {
+								alert('no body tag inside the page '+State.url);
+								return false;
+							}
+		    	
+							check=check[0].replace(/^<body/, '<div');
+							check=check.replace(/body>$/, 'div>');
+
+							//get the wanted content
+							if(typeof content != 'undefined' &&  content) {
+								var element=$(content, '<div>'+check+'</div>');//check).find(State.data.content);
+								var myHtml = element.html();
+							} else {
+								var element=$(check);
+								//var myHtml = check;
+								var myHtml = element.html();
+							}
+							
+							if(!myHtml) return;
+
+							//insert content into the target or body if the section is different    
+			            	target[insertFunction](myHtml);
+			            	
+			            	//apply discreteClick on inserted content
+			            	target.find($.navigate.ajaxLinks).each(function(){
+			            		$(this).discreteClick();
+			            	});
+
+			            	//Give target new class
+			            	if(element.attr("class"))
+		    					target.attr("class", element.attr("class"));
+			            	
+			            	//get the onload and onunload functions of this state
+				            var onload = element.attr("ajax-onload");
+				            var onunload = element.attr("ajax-onunload");
+							
+							//record them	
+				            if(onload) State.data.onload =onload;
+				            if(onunload) State.data.onunload =onunload;
+		    
+							//eval the onload
+							if(onload) {
+								var onloadResult = eval(State.data.onload);
+					        	if(typeof onloadResult =="function") {
+					        		//onunload is a function name, give it the onload as parameter
+					        		onloadResult({
+					        			reverse : reverse,
+					        			target:target,
+					        			currentState:State, 
+					        			clickedSelector:State.data.clickedSelector,
+					        			previousState:previousState
+					        		});
+					        	} 	
+							}
+					    }
+					});
+			        	
+		        };
+						
+		        //Unload the previous state
+				//-------------------------
+		        if(previousState && previousState.data.onunload) {
+		        	var onUnloadResult = eval(previousState.data.onunload);
+		        	if(typeof onUnloadResult =="function") {
+						//onunload is a function name, give it the onload as parameter
+		        		onUnloadResult({
+		        			reverse : reverse,
+		        			target:typeof previousState.data.target != "undefined" ? $(previousState.data.target) : null, 
+		        			currentState:State, 
+		        			clickedSelector:previousState.data.clickedSelector,
+		        			previousState:previousState, 
+		        			callback:loadNewState
+		        		});
+		        	} else {
+						//we executed the onunload with the eval, thus execute the onload
+						loadNewState();
+		        	}
+		        } else {
 					loadNewState();
-	        	}
-	        } else {
-				loadNewState();
-	        }
-	        
-	        //done
-	        return false;
-	    });
-		//un touched prohib the urlbar to show
-	    $("html").on("click",$.navigate.ajaxLinks, function(e) {
-	    	var that = $(this);
-	    	return that.navigate(e);
-	     });
-	     //push the first state
-	     History.pushState({
-	     	onload:$("body").attr("ajax-onload"),
-	     	onunload:$("body").attr("ajax-onunload"),
-	     	insert:'html'
-	     });
-	}
-};
-(function($) {
-	// get unique selector as #id if have id otherwise create id and return the proper selector
-	$.fn.getSelector = function(){
-		var me=$(this);
-		if(!$.isWindow(me[0])){	
-			var toReturn = me.attr('id'); if(!toReturn){toReturn = "me-" + Math.floor(Math.random()*1000000); me.attr('id', toReturn);}
-			me=null;
-			return '#'+toReturn;
-		} else {me=null;return window;} //this is the window
-	};
-	$.fn.discreteClick = function(){
-		var that = $(this);
-		if(that.attr("href") !="javascript://") {
-	    	that.attr("ajax-href", that.attr("href"));
-	    	that.attr("href", "javascript://");
+		        }
+		        
+		        //done
+		        return false;
+		    });
+			//un touched prohib the urlbar to show
+		    $("html").on("click",$.navigate.ajaxLinks, function(e) {
+		    	var that = $(this);
+		    	return that.navigate(e);
+		     });
+		     //push the first state
+		     History.pushState({
+		     	onload:$("body").attr("ajax-onload"),
+		     	onunload:$("body").attr("ajax-onunload"),
+		     	insert:'html'
+		     });
 		}
 	};
-	
-	/**
-	 * This function navigate in ajax thanks to the data of this element
-	 * target : the jquery selector in which we insert the data
-	 * href : the url from which we take the data
-	 * content : the jquery selector in the href page from which we take the data
-	 * title : the page new title
-	 **/
-	$.fn.navigate = function(e){
-		var me = $(this);
-		var rel = me.attr("rel");
+	(function($) {
+		// get unique selector as #id if have id otherwise create id and return the proper selector
+		$.fn.getSelector = function(){
+			var me=$(this);
+			if(!$.isWindow(me[0])){	
+				var toReturn = me.attr('id'); if(!toReturn){toReturn = "me-" + Math.floor(Math.random()*1000000); me.attr('id', toReturn);}
+				me=null;
+				return '#'+toReturn;
+			} else {me=null;return window;} //this is the window
+		};
+		$.fn.discreteClick = function(){
+			var that = $(this);
+			if(that.attr("href") !="javascript://") {
+		    	that.attr("ajax-href", that.attr("href"));
+		    	that.attr("href", "javascript://");
+			}
+		};
 		
-		/* get the ajax content */
-		var content = me.attr('ajax-content');
-		if(!content) content = me.attr("content");
-		
-		/* get the href */
-		var href=me.attr('ajax-href');
-		if(!href) href=me.attr('href');
-		
-		/* get the target */
-		var target = me.attr('ajax-target');
-		if(!target) me.attr("target");
-		
-		/* get the title */
-		var title = me.attr('title');
-		if(!title) title=null;
-		
-		/* get the section */
-		var section = me.attr('ajax-section');
-		if(!section) section=null;
-
-		/* get the insert method */
-		var insert = me.attr('ajax-insert');
-		if(!insert) insert="html";
-				       	
-		//ie add the absolute location on href attribute
-		var base = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
-		href = href.replace(base, ""); 
-		
-		//don't do anything on links with rel="external" or target = blank or target of potential other domain
-        if(href=="javascript://") {return true;}
+		/**
+		 * This function navigate in ajax thanks to the data of this element
+		 * target : the jquery selector in which we insert the data
+		 * href : the url from which we take the data
+		 * content : the jquery selector in the href page from which we take the data
+		 * title : the page new title
+		 **/
+		$.fn.navigate = function(e){
+			var me = $(this);
+			var rel = me.attr("rel");
 			
-   	 	History.pushState(
-			{
-				target:target, 
-				content:content, 
-				insert:insert,
-				section:section,
-				clickedSelector:me.getSelector()
-			}, 
-			title, href
-		);
-		return false;
-	};
-})(jQuery);	
+			/* get the ajax content */
+			var content = me.attr('ajax-content');
+			if(!content) content = me.attr("content");
+			
+			/* get the href */
+			var href=me.attr('ajax-href');
+			if(!href) href=me.attr('href');
+			
+			/* get the target */
+			var target = me.attr('ajax-target');
+			if(!target) me.attr("target");
+			
+			/* get the title */
+			var title = me.attr('title');
+			if(!title) title=null;
+			
+			/* get the section */
+			var section = me.attr('ajax-section');
+			if(!section) section=null;
+
+			/* get the insert method */
+			var insert = me.attr('ajax-insert');
+			if(!insert) insert="html";
+					       	
+			//ie add the absolute location on href attribute
+			var base = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
+			href = href.replace(base, ""); 
+			
+			//don't do anything on links with rel="external" or target = blank or target of potential other domain
+	        if(href=="javascript://") {return true;}
+				
+	   	 	History.pushState(
+				{
+					target:target, 
+					content:content, 
+					insert:insert,
+					section:section,
+					clickedSelector:me.getSelector()
+				}, 
+				title, href
+			);
+			return false;
+		};
+	})(jQuery);	
 }
 $(document).ready(function() {
    $.navigate.init(); 
