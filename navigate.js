@@ -1,3 +1,4 @@
+
 // -------------------------------------------------------------------
 // NAVIGATE
 // -------------------------------------------------------------------
@@ -39,12 +40,11 @@ if(Modernizr.history) {
 		ajaxLinks : 'a.ajax[rel!="external"][target!="_blank"], .ajaxLink',
 		stateChanged : function(){ // Note: We are using statechange instead of popstate
 		   	 	var State = History.getState(false, false);
-
-				var reverse = History.getState().internal == false;
+		   	 	var reverse = History.getState().internal == false;
 				//get target and content
 		       	var target = State.data.target ? $(State.data.target) : $("body");
 		       	var content = State.data.content ? ' '+State.data.content : '';
-		      	   	
+		      	
 		        //get previous state
 		        var previousState = null;
 		        if(History.savedStates.length>1)
@@ -56,26 +56,27 @@ if(Modernizr.history) {
 		        	if(History.loader) {History.loader.abort();}
 		        	//load the content  
 		        	if(previousState ==null) {
+		        		
 		        		//first load
 		        		//--------------------------------------------------------
 		        		//get the onload and onunload functions of this state
-			            var onload = State.data.onload;
-			            var onunload = State.data.onunload;
-	    					
+			            var onload = $("body").attr("ajax-onload");//State.data.onload;
+			            var onunload = $("body").attr("ajax-onunload");//State.data.onunload;
+	    				
 	    				//transform clicks to discrete clicks
 	    				$("body").find($.navigate.ajaxLinks).each(function(){
 		            		$(this).discreteClick();
 		            	});
 	    				//eval the onload
 						if(onload) {
-							var onloadResult = eval(State.data.onload);
+							var onloadResult = eval(onload);
 				        	if(typeof onloadResult =="function") {
 				        		//onunload is a function name, give it the onload as parameter
 				        		onloadResult({
 				        			reverse : false,
-				        			target:State.data.target ? $(State.data.target) : $("body"),
+				        			target:$("body"),
 				        			currentState:State, 
-				        			clickedSelector:State.data.clickedSelector,
+				        			clickedSelector:null,
 				        			previousState:null
 				        		});
 				        	} 	
@@ -137,7 +138,10 @@ if(Modernizr.history) {
 								var myHtml = element.html();
 							}
 							
-							if(!myHtml) return;
+							if(!myHtml) {
+								target.trigger("failnavigate");
+								return;
+							}
 
 							//insert content into the target or body if the section is different    
 			            	target[insertFunction](myHtml);
