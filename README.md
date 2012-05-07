@@ -4,7 +4,7 @@ The goal of refresh plugin is to simply refresh through an automatic ajax call a
 
 ### Attributes
 
-Here are all the optional attribute an element that will call the refrsh() method can have :
+Here are all the optional attribute an element that will call the refresh() method can have :
 
 ```html
 <div refresh-url="any-url" refresh-insert-function="any jquery function or plain function" refresh-status="any-string" refresh-interval="any-number"></div>
@@ -13,7 +13,7 @@ Here are all the optional attribute an element that will call the refrsh() metho
 * `refresh-url` : the url to get the refresh content from (by default : current url)
 * `refresh-insert-function` : the function that will insert the new content (by default $.fn.html)
 * `refresh-status` : if different from current div `refresh-status` will trigger the `refreshstatuschanged` event
-*`refresh-interval` : if set, there will be an automatic refresh called each `refresh-interval` millisecond.
+* `refresh-interval` : if set, there will be an automatic refresh called each `refresh-interval` millisecond.
 
 ### refresh function
 
@@ -73,7 +73,6 @@ after the include to jquery (1.7+)
 * title : the future document title
 * ajax-content : (optional) only the content of specified element in href's page will be inserted otherwise all body content
 * ajax-target : (optional) the content will be inserted into the target element of the current page
-* ajax-section : (optional) any vaue : usefull to force the loading of the full body content if this value is different between pages
 
 ### Notes : 
 
