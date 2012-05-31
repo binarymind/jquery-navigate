@@ -47,7 +47,8 @@ jQuery.refresh = {
 				url : null,
 				content:targetSelector, 
 				clickedSelector:null,
-				callback:function(){}
+				callback:function(){}, 
+                cache:false
 		},options); 
 		
 
@@ -79,6 +80,7 @@ jQuery.refresh = {
 			    context:target,
 			    url: targetUrl,
 			    timeout:8000,
+                cache:options.cache,
 			    dataType: "html"})
 	    		.done(function(data) {
 	    			var target = $(this);
@@ -223,9 +225,10 @@ if(Modernizr.history) {
 	        		clickedSelector:State.data.clickedSelector,
 	        		callback:function() {
 	        			target.find($.navigate.ajaxLinks).each(function(){
-            				$(this).discreteClick();
-            			});	
-	        		}
+            					$(this).discreteClick();
+            				});	
+	        		}, 
+                    		cache:true
 	        	});
 
 		        //done
