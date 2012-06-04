@@ -40,22 +40,27 @@ jQuery.refresh = {
 			options = {refresh:options};
 			//force refresh : options=true or options.refresh==true
 		} else if(typeof options=="undefined") options = {};
-		options = $.extend(
+			options = $.extend(
 			{
-				refresh : true, 
+				refresh : target, 
 				resetInterval : true, 
 				url : null,
 				content:targetSelector, 
 				clickedSelector:null,
-				callback:function(){}, 
-                cache:false
+				callback:function(){},
+				cache:false,
 		},options); 
 		
 
 		//WE REFRESH OR NOT
 		//----------------------------------------------------------------------
 		//check if we do have to refresh
-		if(options.refresh) {
+		var refreshFunction = target.attr("refresh-function");
+		if(typeof refreshFunction != "undefined") {
+			//SWITCH CONTENT
+			if(target[refreshFunction]) target[refreshFunction]();
+			else refreshFunction();
+		} else if(options.refresh) {
 			var currentCall = $.refresh.ajaxCalls[targetSelector];
 			if(currentCall) {
 				target.trigger("stoprefresh");
@@ -72,15 +77,15 @@ jQuery.refresh = {
 				if(refreshUrl) targetUrl = refreshUrl;
 				else targetUrl = window.location.href;
 			}
-			
+			var myRefreshId = target.attr("refresh-id");
 			target.trigger("startrefresh", options.clickedSelector);
-
+			
 			currentCall= $.ajax({
 			    type: "GET",
+			    cache:options.cache,
 			    context:target,
 			    url: targetUrl,
 			    timeout:8000,
-                cache:options.cache,
 			    dataType: "html"})
 	    		.done(function(data) {
 	    			var target = $(this);
@@ -100,6 +105,12 @@ jQuery.refresh = {
 						var element=$(options.content, '<div>'+check+'</div>');//check).find(State.data.content);
 					} else {
 						var element=$(check);
+					}
+					var newRefreshId = element.attr("refresh-id");
+
+					if(myRefreshId && newRefreshId && myRefreshId==newRefreshId) {
+						target.trigger("cancelrefresh", options.clickedSelector);
+						return;
 					}
 					var myHtml = element.html();
 					
@@ -123,6 +134,7 @@ jQuery.refresh = {
 					if(currentStatus && newRefreshStatus && currentStatus != newRefreshStatus) {
 						target.trigger("refreshstatuschanged", options.clickedSelector);
 					} 
+					
 	    			target.trigger("donerefresh", options.clickedSelector);
 	    			options.callback({
 	    				clickedSelector:options.clickedSelector
@@ -172,17 +184,9 @@ if(typeof Modernizr =='undefined') {
 }
 jQuery.navigate = {
 	init:function() {
-	var myFunc = $("body").attr("ajax-onload");
-	if (window.execScript) {
-		if(typeof window[myFunc] == undefined)
-			eval(myFunc);
-		else 
-			window[myFunc](); 
-	    return null; // execScript doesn’t return anything
+		$("body").trigger("donerefresh");
 	}
-	var onloadResult = eval(myFunc);
-	if(typeof onloadResult =="function") onloadResult();
-}};
+};
 
 // for now ajax navigate only if history is taken in charge by html5
 if(Modernizr.history) {
@@ -225,10 +229,10 @@ if(Modernizr.history) {
 	        		clickedSelector:State.data.clickedSelector,
 	        		callback:function() {
 	        			target.find($.navigate.ajaxLinks).each(function(){
-            					$(this).discreteClick();
-            				});	
-	        		}, 
-                    		cache:true
+            				$(this).discreteClick();
+            			});	
+	        		},
+            		cache:true
 	        	});
 
 		        //done
