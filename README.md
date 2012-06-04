@@ -11,6 +11,7 @@ Here are all the optional attribute an element that will call the refresh() meth
 ```
 
 * `refresh-url` : the url to get the refresh content from (by default : current url)
+* `refresh-id` : if both remote and local refresh-id exists and are the same trigger the `cancelrefresh` event
 * `refresh-insert-function` : the function that will insert the new content (by default $.fn.html)
 * `refresh-status` : if different from current div `refresh-status` will trigger the `refreshstatuschanged` event
 * `refresh-interval` : if set, there will be an automatic refresh called each `refresh-interval` millisecond.
