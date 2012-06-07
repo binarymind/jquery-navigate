@@ -78,7 +78,7 @@ jQuery.refresh = {
 				else targetUrl = window.location.href;
 			}
 			var myRefreshId = target.attr("refresh-id");
-			target.trigger("startrefresh", options.clickedSelector);
+			target.trigger({type:"startrefresh", clickedSelector:options.clickedSelector});
 			
 			currentCall= $.ajax({
 			    type: "GET",
@@ -109,13 +109,13 @@ jQuery.refresh = {
 					var newRefreshId = element.attr("refresh-id");
 
 					if(myRefreshId && newRefreshId && myRefreshId==newRefreshId) {
-						target.trigger("cancelrefresh", options.clickedSelector);
+						target.trigger({type:"cancelrefresh", clickedSelector:options.clickedSelector});
 						return;
 					}
 					var myHtml = element.html();
 					
 					if(!myHtml) {
-						target.trigger("failrefresh", options.clickedSelector);
+						target.trigger({type:"failrefresh", clickedSelector:options.clickedSelector});
 						return;
 					}
 					
@@ -132,21 +132,27 @@ jQuery.refresh = {
 					var currentStatus = target.attr("refresh-status");
 					
 					if(currentStatus && newRefreshStatus && currentStatus != newRefreshStatus) {
-						target.trigger("refreshstatuschanged", options.clickedSelector);
+						target.trigger({
+							type:"refreshstatuschanged",
+							clickedSelector:options.clickedSelector,
+							oldStatus:currentStatus, 
+							newStatus:newRefreshStatus
+						});
+						//target.trigger("refreshstatuschanged", options.clickedSelector);
 					} 
 					
-	    			target.trigger("donerefresh", options.clickedSelector);
-	    			options.callback({
+	    			target.trigger({type:"donerefresh", clickedSelector:options.clickedSelector});
+					options.callback({
 	    				clickedSelector:options.clickedSelector
 	    			});
 			    })
 				.fail(function(){
 					currentCall.abort();
 					currentCall=null;
-					$(this).trigger("failrefresh", options.clickedSelector);
+					$(this).trigger({type:"failrefresh", clickedSelector:options.clickedSelector});
 				});
 		} else {
-			target.trigger("donerefresh", options.clickedSelector);
+			target.trigger({type:"donerefresh", clickedSelector:options.clickedSelector});
 		}
 
 		//CLEAN CURRENT TIMER IF MANUAL FORCE REFRESH
