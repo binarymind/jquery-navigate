@@ -255,7 +255,7 @@ if(Modernizr.history) {
 			//Navigate when click
 		    $("html").on("click",$.navigate.ajaxLinks, function(e) {
 		    	var that = $(this);
-		    	return that.navigate(e);
+		    	return that.navigate();
 		    });
 
 		    // Bind to StateChange Event
@@ -291,51 +291,75 @@ if(Modernizr.history) {
 		 * content : the jquery selector in the href page from which we take the data
 		 * title : the page new title
 		 **/
-		$.fn.navigate = function(e){
+		$.fn.navigate = function(options){
 			var me = $(this);
-			var rel = me.attr("rel");
+			if(options) {
+				var myUrl = document.location.href;
+				myUrl = myUrl.replace(myUrl.substring(0, myUrl.lastIndexOf("/") + 1), "");
+					options = $.extend(
+					{
+						url : myUrl, 
+						content:'body', 
+						title:document.title,
+						target:'body',
+						insert:me.attr("refresh-insert-function") ? $(this).attr("refresh-insert-function") : "html",
+						status:me.attr('refresh-status')
+					},options); 
+					History.pushState(
+					{
+						target:options.target, 
+						content:options.content, 
+						insert:options.insert,
+						status:options.status,
+						clickedSelector:null
+					}, 
+					options.title, options.url
+				);
+			} else {
+				var rel = me.attr("rel");
 			
-			/* get the ajax content */
-			var content = me.attr('ajax-content');
-			if(!content) content = 'body';
-			
-			/* get the href */
-			var href=me.attr('ajax-href');
-			if(!href) href=me.attr('href');
-			
-			/* get the target */
-			var target = me.attr('ajax-target');
-			if(!target) target = me.attr("target");
-			if(!target) target = "body";
-			
-			/* get the title */
-			var title = me.attr('title');
-			if(!title) title=null;
-			
-			/* get the status */
-			var status = $(target).attr('refresh-status');
-			if(!status) status=null;
+				/* get the ajax content */
+				var content = me.attr('ajax-content');
+				if(!content) content = 'body';
+				
+				/* get the href */
+				var href=me.attr('ajax-href');
+				if(!href) href=me.attr('href');
+					
+				/* get the target */
+				var target = me.attr('ajax-target');
+				if(!target) target = me.attr("target");
+				if(!target) target = "body";
+				
+				/* get the title */
+				var title = me.attr('title');
+				if(!title) title=null;
+				
+				/* get the status */
+				var status = $(target).attr('refresh-status');
+				if(!status) status=null;
 
-			/* get the insert method */
-			var insert = me.attr('ajax-insert');
-			if(!insert) insert="html";
-					       	
-			//ie add the absolute location on href attribute
-			var base = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
-			href = href.replace(base, ""); 
-			
-			//don't do anything on links with rel="external" or target = blank or target of potential other domain
-	        if(href=="javascript://") {return true;}	
-	   	 	History.pushState(
-				{
-					target:target, 
-					content:content, 
-					insert:insert,
-					status:status,
-					clickedSelector:me.getSelector()
-				}, 
-				title, href
-			);
+				/* get the insert method */
+				var insert = me.attr('ajax-insert');
+				if(!insert) insert="html";
+						       	
+				//ie add the absolute location on href attribute
+				var base = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
+				href = href.replace(base, ""); 
+				
+				//don't do anything on links with rel="external" or target = blank or target of potential other domain
+		        if(href=="javascript://") {return true;}	
+		   	 	History.pushState(
+					{
+						target:target, 
+						content:content, 
+						insert:insert,
+						status:status,
+						clickedSelector:me.getSelector()
+					}, 
+					title, href
+				);
+			}
 			return false;
 		};
 	})(jQuery);	
