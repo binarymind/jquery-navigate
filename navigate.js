@@ -3,7 +3,8 @@
 // -------------------------------------------------------------------
 jQuery.refresh = {
 	ajaxCalls : new Array(), 
-	refreshTimers : new Array()
+	refreshTimers : new Array(), 
+	defaultCache : false
 };
 (function($) {
 	// get unique selector as #id if have id otherwise create id and return the proper selector
@@ -48,7 +49,7 @@ jQuery.refresh = {
 				content:targetSelector, 
 				clickedSelector:null,
 				callback:function(){},
-				cache:false,
+				cache:$.refresh.defaultCache
 		},options); 
 		
 
@@ -131,7 +132,7 @@ jQuery.refresh = {
 	    			var newRefreshStatus = element.attr("refresh-status");
 					var currentStatus = target.attr("refresh-status");
 					
-					if(currentStatus && newRefreshStatus && currentStatus != newRefreshStatus) {
+					if(newRefreshStatus && currentStatus != newRefreshStatus) {
 						target.trigger({
 							type:"refreshstatuschanged",
 							clickedSelector:options.clickedSelector,
@@ -200,6 +201,7 @@ if(Modernizr.history) {
 	
 	jQuery.navigate = {
 		historyStates : new Array(),
+		defaultCache:true,
 		ajaxLinks : 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink',
 		stateChanged : function(event){ // Note: We are using statechange instead of popstate
 		   	 	var State = History.getState(false, false);
@@ -238,7 +240,7 @@ if(Modernizr.history) {
             				$(this).discreteClick();
             			});	
 	        		},
-            		cache:true
+            		cache:$.navigate.defaultCache
 	        	});
 
 		        //done
@@ -365,5 +367,12 @@ if(Modernizr.history) {
 	})(jQuery);	
 }
 $(document).ready(function() {
+   //set default cache for refresh calls if different than the default value (refresh calls = cache:false)
+   $.refresh.defaultCache = false;
+   //set default cache for navigate calls if different than the default value (navigate calls = cache:true)
+   $.navigate.defaultCache = true;
+   //initialize the structure of your ajax links here, here is the default value
+   $.navigate.ajaxLinks = 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink';
+   //init the navigate plugin
    $.navigate.init(); 
 });
