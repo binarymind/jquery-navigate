@@ -2,6 +2,10 @@
 
 The goal of refresh plugin is to simply refresh through an automatic ajax call any element of the page. 
 
+### News
+
+The website <a href="http://mobile.interflora.fr">Interflora mobile</a> using a previous version of jquery-navigate recieved the 2012 Google prize for mobile website in the distribution sector mainly for the speed of the website.
+
 ### Attributes
 
 Here are all the optional attribute an element that will call the refresh() method can have :
