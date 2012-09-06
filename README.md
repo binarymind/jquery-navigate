@@ -78,7 +78,7 @@ after the include to jquery (1.7+) and the plugin will ajax-navigate automatical
 
 ### Configuration (optional)
 
-just go to the last lines of the plugin, and modify the $.navigate.init function as described there, you can change the 
+just go to the last lines of the plugin, and modify the $.navigate.init() call as described there, you can change the 
 
 * the default function that replace the old content from the new ajax-gotten content.
 * selector for the links to have an ajax behaviour : 
