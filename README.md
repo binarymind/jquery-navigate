@@ -58,18 +58,15 @@ The goal of the jQuery plugin Navigate is to
 *  Listen to the `startrefresh`, `donerefresh`, and `stoprefresh` events to make cool transitions between states
 *  Manage atomatically the History throwing events logically (old state target throw `stoprefresh`, new state target throw `startrefresh` and then `donerefresh`).
 
-## BASIC
+### BASIC
 simply include your 
 
 ```html
 <script type="text/javascript" src="url/to/navigate.js" ></script>
 ```
-after the include to jquery (1.7+)
 
+after the include to jquery (1.7+) and the plugin will ajax-navigate automaticaly any link :
 
-```CAUTION : all js in <head>  ```
-
-### Navigate will ajax-navigate automaticaly any link :
 ```
 <a href="myUrl" ajax-content="any selector" ajax-target="any selector" title="my title">link</a>
 ```
@@ -79,15 +76,38 @@ after the include to jquery (1.7+)
 * ajax-content : (optional) only the content of specified element in href's page will be inserted otherwise all body content
 * ajax-target : (optional) the content will be inserted into the target element of the current page
 
-### Notes : 
+### Configuration (optional)
 
+just go to the last lines of the plugin, and modify the $.navigate.init function as described there, you can change the 
+
+* the default function that replace the old content from the new ajax-gotten content.
+* selector for the links to have an ajax behaviour : 
+
+```
 by default ajax call will NOT be made if any of the following case is true
-
 * target=="_blank"
 * has the class "noAjax"
 * href=="javascript://"
 * href contains "http"
 * rel attribute == "external"
+```
+
+### Scripts and ajax navigation  
+
+* basically, you will insert all you js in the <head> of the page
+* if you want to have scripts inside your page do the following : 
+
+```html
+<script>
+	var foo = function() {
+		//stuff you want to do
+	};
+	
+    //code you have to put for the foo function to be executed correctly
+	if(document.readyState === "complete") foo();
+	else $(document).ready(foo);
+</script>
+```
 
 ## CREDITS
 Use of Modernizr and Balupton History.js (https://github.com/balupton/History.js)
