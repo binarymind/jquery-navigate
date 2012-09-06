@@ -94,8 +94,9 @@ by default ajax call will NOT be made if any of the following case is true
 
 ### Scripts and ajax navigation  
 
-* basically, you will insert all you js in the <head> of the page
-* if you want to have scripts inside your page do the following : 
+* basically, you will insert all you js in the head of the page
+* You can add anyway any script you want thay will be inserted
+* However, if you want to have scripts using jquery inside your page do the following : 
 
 ```html
 <script>
