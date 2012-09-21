@@ -102,12 +102,13 @@ $(document).ready(function() {
 * selector for the links to have an ajax behaviour : 
 
 ```
-by default ajax call will NOT be made if any of the following case is true
-* target=="_blank"
-* has the class "noAjax"
-* href=="javascript://"
-* href contains "http"
-* rel attribute == "external"
+//by default ajax links are : 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink'
+//you can change it example : 
+$(document).ready(function() {
+	$.navigate.init({
+		ajaxLinks:'a.ajax'
+	});
+});
 ```
 
 ### Scripts and ajax navigation  
