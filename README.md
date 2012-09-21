@@ -81,6 +81,7 @@ after the include to jquery (1.7+) and the plugin will ajax-navigate automatical
 just go to the last lines of the plugin, and modify the $.navigate.init() call as described there, you can change the 
 
 * the default function that replace the old content from the new ajax-gotten content.
+
 ```
 //how to create a custom function : 
 (function($) {
@@ -90,7 +91,9 @@ just go to the last lines of the plugin, and modify the $.navigate.init() call a
 	};
 })(jQuery);	
 ```	
+
 * selector for the links to have an ajax behaviour : 
+
 ```
 by default ajax call will NOT be made if any of the following case is true
 * target=="_blank"
