@@ -67,7 +67,7 @@ simply include your
 
 after the include to jquery (1.7+) and the plugin will ajax-navigate automaticaly any link :
 
-```
+```html
 <a href="myUrl" ajax-content="any selector" ajax-target="any selector" title="my title">link</a>
 ```
 
@@ -82,7 +82,7 @@ just go to the last lines of the plugin, and modify the $.navigate.init() call a
 
 * the default function that replace the old content from the new ajax-gotten content.
 
-```
+```html
 //how to create a custom function : 
 (function($) {
 	$.fn.insertPageHtml = function(myHtml) {
@@ -101,7 +101,7 @@ $(document).ready(function() {
 
 * selector for the links to have an ajax behaviour : 
 
-```
+```html
 //by default ajax links are : 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink'
 //you can change it example : 
 $(document).ready(function() {
