@@ -24,7 +24,7 @@ Here are all the optional attribute an element that will call the refresh() meth
 
 All the parameters are optional.
 
-```html
+```javascript
 $("#my-id").refresh({
     refresh : true, 
     resetInterval : true, 
@@ -82,7 +82,7 @@ just go to the last lines of the plugin, and modify the $.navigate.init() call a
 
 * the default function that replace the old content from the new ajax-gotten content.
 
-```html
+```javascript
 //how to create a custom function : 
 (function($) {
 	$.fn.insertPageHtml = function(myHtml) {
@@ -101,7 +101,7 @@ $(document).ready(function() {
 
 * selector for the links to have an ajax behaviour : 
 
-```html
+```javascript
 //by default ajax links are : 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink'
 //you can change it example : 
 $(document).ready(function() {
