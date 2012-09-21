@@ -89,7 +89,14 @@ just go to the last lines of the plugin, and modify the $.navigate.init() call a
 		//switch elements
 		$('#my-content').html($("#my-content", myHtml).html());
 	};
-})(jQuery);	
+})(jQuery);
+
+//and then in your init function you do : 
+$(document).ready(function() {
+	$.navigate.init({
+		defaultInsertFunction:'insertPageHtml'
+	});
+});
 ```	
 
 * selector for the links to have an ajax behaviour : 
