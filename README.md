@@ -65,7 +65,9 @@ simply include your
 <script type="text/javascript" src="url/to/navigate.js" ></script>
 ```
 
-after the include to jquery (1.7+) and the plugin will ajax-navigate automaticaly any link :
+after the include to jquery (1.7+) and the plugin will ajax-navigate automaticaly in your website. 
+
+Here are now the optional customization : 
 
 ```html
 <a href="myUrl" ajax-content="any selector" ajax-target="any selector" title="my title">link</a>
