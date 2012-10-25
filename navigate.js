@@ -328,7 +328,7 @@ if(Modernizr.history && xtIPhone) {
 						content:'body', 
 						title:document.title,
 						target:'body',
-						insert:me.attr("refresh-insert-function") ? $(this).attr("refresh-insert-function") : null,
+						insert:me.attr("refresh-insert-function") ? me.attr("refresh-insert-function") : null,
 						status:me.attr('refresh-status')
 					},options); 
 					History.pushState(
@@ -367,7 +367,7 @@ if(Modernizr.history && xtIPhone) {
 
 				/* get the insert method */
 				var insert = me.attr('ajax-insert');
-				if(!insert) insert="html";
+				if(!insert) insert=null;
 						       	
 				//ie add the absolute location on href attribute
 				var base = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
