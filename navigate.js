@@ -138,7 +138,7 @@ jQuery.refresh = {
     				//SWITCH CONTENT
 					if(target[insertFunction]) target[insertFunction](myHtml);
 	    			else insertFunction(myHtml);
-					target.one("finishrefreshinsert", function() {
+					target.off("finishrefreshinsert").on("finishrefreshinsert", function() {
 						//check status
 		    			var newRefreshStatus = element.attr("refresh-status");
 						var currentStatus = target.attr("refresh-status");
@@ -237,14 +237,13 @@ if(Modernizr.history && xtIPhone) {
     				$("body").find($.navigate.ajaxLinks).each(function(){
 	            		$(this).discreteClick();
 	            	});
-    				$("body").refresh({refresh:false});
-					return;
-		   	 	} else {
-		   	 		var previousTarget = previousState.data.target ? $(previousState.data.target) : $("body");
-		   	 		previousTarget.stopRefresh();
-		   	 	}
-		   	 	
-				target.refresh({
+    			$("body").refresh({refresh:false});
+				return;
+	   	 	} else {
+	   	 		var previousTarget = previousState.data.target ? $(previousState.data.target) : $("body");
+	   	 		previousTarget.stopRefresh();
+	   	 	}
+	   	 	var myOptions = {
 	        		refresh:true, 
 	        		url:State.url, 
 	        		content:State.data.content,
@@ -255,10 +254,11 @@ if(Modernizr.history && xtIPhone) {
             				$(this).discreteClick();
             			});	
 	        		},
-            		cache:$.navigate.defaultCache, 
-            		refreshInsertFunction:jQuery.navigate.defaultInsertFunction
-	        	});
-
+            			cache:$.navigate.defaultCache, 
+	        	};
+	        	if(State.data.insert) myOptions.refreshInsertFunction = State.data.insert;
+			target.refresh(myOptions);
+			
 		        //done
 		        return false;
 		    },
