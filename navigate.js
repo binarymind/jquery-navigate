@@ -56,7 +56,7 @@ jQuery.refresh = {
 				clickedSelector:null,
 				callback:function(){},
 				cache:$.refresh.defaultCache, 
-				refreshInsertFunction:'defaultRefreshInsert'
+				refreshInsertFunction:$.navigate.defaultInsertFunction
 		},options); 
 		
 
