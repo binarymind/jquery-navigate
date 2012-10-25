@@ -328,7 +328,7 @@ if(Modernizr.history && xtIPhone) {
 						content:'body', 
 						title:document.title,
 						target:'body',
-						insert:me.attr("refresh-insert-function") ? $(this).attr("refresh-insert-function") : "html",
+						insert:me.attr("refresh-insert-function") ? $(this).attr("refresh-insert-function") : null,
 						status:me.attr('refresh-status')
 					},options); 
 					History.pushState(
