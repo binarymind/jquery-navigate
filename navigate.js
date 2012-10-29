@@ -136,8 +136,7 @@ jQuery.refresh = {
 					var insertFunction = target.attr('refresh-insert-function');
 					if(!insertFunction) insertFunction=options.refreshInsertFunction;//"html";
     				//SWITCH CONTENT
-					if(target[insertFunction]) target[insertFunction](myHtml);
-	    			else insertFunction(myHtml);
+					
 					target.off("finishrefreshinsert").on("finishrefreshinsert", function() {
 						//check status
 		    			var newRefreshStatus = element.attr("refresh-status");
@@ -157,6 +156,8 @@ jQuery.refresh = {
 		    				clickedSelector:options.clickedSelector
 		    			});
 					});
+					if(target[insertFunction]) target[insertFunction](myHtml);
+	    					else insertFunction(myHtml);
 					
 			    })
 				.fail(function(){
