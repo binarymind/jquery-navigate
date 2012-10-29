@@ -137,7 +137,7 @@ jQuery.refresh = {
 					if(!insertFunction) insertFunction=options.refreshInsertFunction;//"html";
     				//SWITCH CONTENT
 					
-					target.off("finishrefreshinsert").on("finishrefreshinsert", function() {
+					target.off("finishrefreshinsert").one("finishrefreshinsert", function() {
 						//check status
 		    			var newRefreshStatus = element.attr("refresh-status");
 						var currentStatus = target.attr("refresh-status");
