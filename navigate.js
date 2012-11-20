@@ -49,6 +49,7 @@ jQuery.refresh = {
 		//else if(typeof options=="undefined") options = {};
 			options = $.extend(
 			{
+				html : null,
 				refresh : target, 
 				resetInterval : true, 
 				url : null,
@@ -88,83 +89,88 @@ jQuery.refresh = {
 			var myRefreshId = target.attr("refresh-id");
 			target.trigger({type:"startrefresh", clickedSelector:options.clickedSelector});
 			
-			currentCall= $.ajax({
-			    type: "GET",
-			    cache:options.cache,
-			    context:target,
-			    url: targetUrl,
-			    timeout:8000,
-			    dataType: "html"})
-	    		.done(function(data) {
-	    			var target = $(this);
-	    			currentCall = null;
-	    			//Remove the body tag not to load all scripts and header of the loaded page
-			       	//-------------------------------------------------------------------------
-			       	var re = /<body[\s\S]*\/body>/;
-					var check=data.match(re);
-					if(check && check.length>0) {
-						check=check[0].replace(/^<body/, '<div');
-						check=check.replace(/body>$/, 'div>');
-					} else check=data;
-					
-					//get the wanted content
-					if(options.content != 'body') {
-						var element=$(options.content, '<div>'+check+'</div>');//check).find(State.data.content);
-					} else {
-						var element=$(check);
-					}
-					var newRefreshId = element.attr("refresh-id");
+			var myDoneFunc = function(data) {
+    				//var target = $(this);
+	    			//alert("done");
+    				currentCall = null;
+    				//Remove the body tag not to load all scripts and header of the loaded page
+		       		//-------------------------------------------------------------------------
+		       		var re = /<body[\s\S]*\/body>/;
+				var check=data.match(re);
+				if(check && check.length>0) {
+					check=check[0].replace(/^<body/, '<div');
+					check=check.replace(/body>$/, 'div>');
+				} else check=data;
+				
+				//get the wanted content
+				if(options.content != 'body') {
+					var element=$(options.content, '<div>'+check+'</div>');//check).find(State.data.content);
+				} else {
+					var element=$(check);
+				}
+				var newRefreshId = element.attr("refresh-id");
 
-					if(myRefreshId && newRefreshId && myRefreshId==newRefreshId) {
-						target.trigger({type:"cancelrefresh", clickedSelector:options.clickedSelector});
-						return;
-					}
-					var myHtml = '';
-					element.each(function() {
-						if(($(this).prop("tagName")).toLowerCase()=='script')
-							myHtml+='<script type="text/javascript">'+$(this).html()+'</script>';
-						else 
-							myHtml+=$(this).html();
-					});
+				if(myRefreshId && newRefreshId && myRefreshId==newRefreshId) {
+					target.trigger({type:"cancelrefresh", clickedSelector:options.clickedSelector});
+					return;
+				}
+				var myHtml = '';
+				element.each(function() {
+					if(($(this).prop("tagName")).toLowerCase()=='script')
+						myHtml+='<script type="text/javascript">'+$(this).html()+'</script>';
+					else 
+						myHtml+=$(this).html();
+				});
+				
+				if(!myHtml) {
+					target.trigger({type:"failrefresh", clickedSelector:options.clickedSelector});
+					return;
+				}
+				
+				/* get the refresh insert method */
+				var insertFunction = target.attr('refresh-insert-function');
+				if(!insertFunction) insertFunction=options.refreshInsertFunction;//"html";
+				
+				//SWITCH CONTENT
+				target.off("finishrefreshinsert").one("finishrefreshinsert", function() {
+					//check status
+	    			var newRefreshStatus = element.attr("refresh-status");
+					var currentStatus = target.attr("refresh-status");
+					if(newRefreshStatus && currentStatus != newRefreshStatus) {
+						target.trigger({
+							type:"refreshstatuschanged",
+							clickedSelector:options.clickedSelector,
+							oldStatus:currentStatus, 
+							newStatus:newRefreshStatus
+						});
+						//target.trigger("refreshstatuschanged", options.clickedSelector);
+					} 
 					
-					if(!myHtml) {
-						target.trigger({type:"failrefresh", clickedSelector:options.clickedSelector});
-						return;
-					}
-					
-					/* get the refresh insert method */
-					var insertFunction = target.attr('refresh-insert-function');
-					if(!insertFunction) insertFunction=options.refreshInsertFunction;//"html";
-    				//SWITCH CONTENT
-					
-					target.off("finishrefreshinsert").one("finishrefreshinsert", function() {
-						//check status
-		    			var newRefreshStatus = element.attr("refresh-status");
-						var currentStatus = target.attr("refresh-status");
-						if(newRefreshStatus && currentStatus != newRefreshStatus) {
-							target.trigger({
-								type:"refreshstatuschanged",
-								clickedSelector:options.clickedSelector,
-								oldStatus:currentStatus, 
-								newStatus:newRefreshStatus
-							});
-							//target.trigger("refreshstatuschanged", options.clickedSelector);
-						} 
-						
-		    			target.trigger({type:"donerefresh", clickedSelector:options.clickedSelector});
-						options.callback({
-		    				clickedSelector:options.clickedSelector
-		    			});
-					});
-					if(target[insertFunction]) target[insertFunction](myHtml);
-	    					else insertFunction(myHtml);
-					
-			    })
+	    			target.trigger({type:"donerefresh", clickedSelector:options.clickedSelector});
+					options.callback({
+	    					clickedSelector:options.clickedSelector
+	    				});
+				});
+
+				if(target[insertFunction]) target[insertFunction](myHtml);
+    				else insertFunction(myHtml);				
+			};
+
+			if(!options.html) 
+				currentCall= $.ajax({
+					type: "GET",
+					cache:options.cache,
+					context:target,
+					url: targetUrl,
+					timeout:8000,
+					dataType: "html"})
+	    			.done(myDoneFunc)
 				.fail(function(){
 					currentCall.abort();
 					currentCall=null;
 					$(this).trigger({type:"failrefresh", clickedSelector:options.clickedSelector});
 				});
+			else myDoneFunc(options.html);
 		} else {
 			target.trigger({type:"donerefresh", clickedSelector:options.clickedSelector});
 		}
@@ -249,7 +255,8 @@ if(Modernizr.history && xtIPhone) {
 	        		url:State.url, 
 	        		content:State.data.content,
 	        		status:State.data.status, 
-	        		clickedSelector:State.data.clickedSelector,
+	        		html:State.data.html,
+		        	clickedSelector:State.data.clickedSelector,
 	        		callback:function() {
 	        			target.find($.navigate.ajaxLinks).each(function(){
             				$(this).discreteClick();
@@ -325,6 +332,7 @@ if(Modernizr.history && xtIPhone) {
 				myUrl = myUrl.replace(myUrl.substring(0, myUrl.lastIndexOf("/") + 1), "");
 					options = $.extend(
 					{
+						html:null,
 						url : myUrl, 
 						content:'body', 
 						title:document.title,
@@ -338,7 +346,8 @@ if(Modernizr.history && xtIPhone) {
 						content:options.content, 
 						insert:options.insert,
 						status:options.status,
-						clickedSelector:null
+						clickedSelector:null,
+						html:options.html
 					}, 
 					options.title, options.url
 				);
