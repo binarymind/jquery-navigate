@@ -31,12 +31,13 @@ $("#my-id").refresh({
     url : null,
     content:targetSelector, 
     clickedSelector:null,
-    callback:function(){}
+    callback:function(){},
+    html : null, /* simulate direct html response without any ajax call */
 });
 ```
 
 * 1 - $("#my-id") trigger the event `startrefresh`
-* 2 - if the parameter `refresh` is true : make the ajax call to the parameter `url` or the attribute `refresh-url` or the current url
+* 2 - if the parameter `refresh` is true :  if the parameter `html` != null skip this step as we have the response already otherwise make the ajax call to the parameter `url` or the attribute `refresh-url` or the current url
 * 3 - if fail the ajax call or element not accessible in specified url, $("#my-id") trigger the event `failrefresh`
 * 4 - if the attribute `refresh-status` of the element is currently defined and has changed or disapeared trigger the event `refreshstatuschanged`
 * 5 if the attribute `refresh-interval` is set and the parameter resetInterval is true and there is a current refresh intervel : stop the current interval
