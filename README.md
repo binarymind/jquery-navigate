@@ -49,7 +49,7 @@ $("#my-id").refresh({
 * clear the interval refresh of the element
 * trigger the event `stoprefresh`
 
-## Automatic ajax jquery navigation, mobile friendly (beta)
+## Automatic ajax jquery navigation, mobile friendly
 
 Navigate depends on refresh,thus we included it in the file. 
 The goal of the jQuery plugin Navigate is to
