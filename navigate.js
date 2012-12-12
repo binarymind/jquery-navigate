@@ -104,7 +104,7 @@ jQuery.refresh = {
 				
 				//get the wanted content
 				if(options.content != 'body') {
-					var element=$(options.content, '<div>'+check+'</div>');//check).find(State.data.content);
+					var element=$(options.content, '<div>'+check+'</div>').add($(check).filter(':not(div)'));
 				} else {
 					var element=$(check);
 				}
