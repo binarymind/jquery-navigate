@@ -116,7 +116,8 @@ jQuery.refresh = {
 				}
 				var myHtml = '';
 				element.each(function() {
-					if(($(this).prop("tagName")).toLowerCase()=='script')
+					var myTagName = $(this).prop("tagName");
+					if(myTagName && myTagName.toLowerCase()=='script')
 						myHtml+='<script type="text/javascript">'+$(this).html()+'</script>';
 					else 
 						myHtml+=$(this).html();
