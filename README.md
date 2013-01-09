@@ -79,7 +79,7 @@ Here are now the optional customization :
 * ajax-content : (optional) only the content of specified element in href's page will be inserted otherwise all body content
 * ajax-target : (optional) the content will be inserted into the target element of the current page
 
-### Configuration (optional)
+### OPTIONAL Configuration
 
 just go to the last lines of the plugin, and modify the $.navigate.init() call as described there, you can change the 
 
@@ -115,6 +115,18 @@ $(document).ready(function() {
 });
 ```
 
+* selector for the links to have a discrete link behaviour (no url bar shown) : 
+
+```javascript
+//by default discreteLinks are : 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink'
+//you can change it example : 
+$(document).ready(function() {
+	$.navigate.init({
+		discreteLinks:'a'
+	});
+});
+
+```
 ### Scripts and ajax navigation  
 
 * basically, you will insert all you js in the head of the page
