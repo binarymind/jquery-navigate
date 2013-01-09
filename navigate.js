@@ -226,6 +226,7 @@ if(ajaxNavigate) {
 		historyStates : new Array(),
 		defaultCache:true,
 		ajaxLinks : 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink',
+		discreteLinks : 'a:not(.noAjax), .ajaxLink',
 		defaultInsertFunction:'defaultRefreshInsert',
 		stateChanged : function(event){ // Note: We are using statechange instead of popstate
 		   	 	var State = History.getState(false, false);
@@ -243,9 +244,9 @@ if(ajaxNavigate) {
 				if(previousState ==null) {
 		        	//first load
 		   	 		//transform clicks to discrete clicks
-    				$("body").find($.navigate.ajaxLinks).each(function(){
-	            		$(this).discreteClick();
-	            	});
+    				$("body").find($.navigate.discreteLinks).each(function(){
+		            		$(this).discreteClick();
+		            	});
     			$("body").refresh({refresh:false});
 				return;
 	   	 	} else {
@@ -260,7 +261,7 @@ if(ajaxNavigate) {
 	        		html:State.data.html,
 		        	clickedSelector:State.data.clickedSelector,
 	        		callback:function() {
-	        			target.find($.navigate.ajaxLinks).each(function(){
+	        			target.find($.navigate.discreteLinks).each(function(){
             				$(this).discreteClick();
             			});	
 	        		},
@@ -276,11 +277,12 @@ if(ajaxNavigate) {
 			options = $.extend(
 			{
 				ajaxLinks : this.ajaxLinks, 
+				discreteLinks : this.discreteLinks,
 				defaultInsertFunction:$.navigate.defaultInsertFunction
 			},options);
 			this.defaultInsertFunction = options.defaultInsertFunction;
 			this.ajaxLinks = options.ajaxLinks;
-			
+			this.discreteLinks = options.discreteLinks;
 			// Prepare HISTORY
 		    var History = window.History; // Note: We are using a capital H instead of a lower h
 		    if ( !History.enabled ) {
