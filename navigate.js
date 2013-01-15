@@ -90,24 +90,29 @@ jQuery.refresh = {
 			target.trigger({type:"startrefresh", clickedSelector:options.clickedSelector});
 			
 			var myDoneFunc = function(data) {
-    				//var target = $(this);
-	    			//alert("done");
     				currentCall = null;
     				//Remove the body tag not to load all scripts and header of the loaded page
 		       		//-------------------------------------------------------------------------
 		       		var re = /<body[\s\S]*\/body>/;
 				var check=data.match(re);
 				if(check && check.length>0) {
-					check=check[0].replace(/^<body/, '<div');
-					check=check.replace(/body>$/, 'div>');
+					check=check[0].replace(/^<body/, '<div');//.replace(/^<script/, '<div class="temp-script"');
+					check=check.replace(/body>$/, 'div>');//.replace(/script>$/, 'div>');
 				} else check=data;
 				
+				//Remove the scripts tags
+		       		//-------------------------------------------------------------------------
+		       		check = check.replace('<script', '<div class="temp-script"');
+		       		check = check.replace('script>', 'div>');
+
 				//get the wanted content
-				if(options.content != 'body') {
-					var element=$(options.content, '<div>'+check+'</div>').add($(check).filter(':not(div)'));
+				//-------------------------------------------------------------------------
+		       		if(options.content != 'body') {
+					var element=$(options.content, '<div>'+check+'</div>');//check).find(State.data.content);
 				} else {
 					var element=$(check);
 				}
+				
 				var newRefreshId = element.attr("refresh-id");
 
 				if(myRefreshId && newRefreshId && myRefreshId==newRefreshId) {
@@ -115,14 +120,15 @@ jQuery.refresh = {
 					return;
 				}
 				var myHtml = '';
-				element.each(function() {
-					var myTagName = $(this).prop("tagName");
-					if(myTagName && myTagName.toLowerCase()=='script')
-						myHtml+='<script type="text/javascript">'+$(this).html()+'</script>';
-					else 
-						myHtml+=$(this).html();
-				});
 				
+				//add again the inline scripts to the wanted html
+				//-------------------------------------------------------------------------
+		       		var myScripts = element.find(".temp-script").remove();
+				element.each(function() {myHtml+=$(this).html();});
+				myScripts.each(function(){
+					myHtml +='<script type="text/javascript">'+$(this).html()+'</script>';
+				})
+
 				if(!myHtml) {
 					target.trigger({type:"failrefresh", clickedSelector:options.clickedSelector});
 					return;
@@ -149,13 +155,13 @@ jQuery.refresh = {
 					
 	    			target.trigger({type:"donerefresh", clickedSelector:options.clickedSelector});
 					options.callback({
-	    					clickedSelector:options.clickedSelector
-	    				});
+	    				clickedSelector:options.clickedSelector
+	    			});
 				});
 
 				if(target[insertFunction]) target[insertFunction](myHtml);
-    				else insertFunction(myHtml);				
-			};
+    				else insertFunction(myHtml);		
+		    	};
 
 			if(!options.html) 
 				currentCall= $.ajax({
