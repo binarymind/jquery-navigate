@@ -411,7 +411,9 @@ if(ajaxNavigate) {
 	})(jQuery);	
 }
 $(document).ready(function() {
-	$.navigate.init(); 
+	//normal use : 
+	//$.navigate.init(); 
+	
 	//you can add these parameters  : 
 	//$.navigate.init({
 	//	ajaxLinks : 'any selector you want for your ajax links', 
