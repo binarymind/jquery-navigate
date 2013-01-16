@@ -102,8 +102,8 @@ jQuery.refresh = {
 				
 				//Remove the scripts tags
 		       		//-------------------------------------------------------------------------
-		       		check = check.replace('<script', '<div class="temp-script"');
-		       		check = check.replace('script>', 'div>');
+		       		check = check.replace(new RegExp('<script', 'g'),'<div class="temp-script"');
+		       		check = check.replace(new RegExp('script>', 'g'),'div>');
 
 				//get the wanted content
 				//-------------------------------------------------------------------------
