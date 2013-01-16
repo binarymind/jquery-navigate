@@ -35,8 +35,9 @@ jQuery.refresh = {
 		}
 	};
 	/* This is the default function that insert ajax refreshed content and trigger an event telling it's ready */		
-	$.fn.defaultRefreshInsert = function(myHtml) {
-		$(this).html(myHtml);
+	$.fn.defaultRefreshInsert = function(options) {
+		//options = {html:value, scripts:value}
+		$(this).html(options.html);
 		$(this).trigger({type:"finishrefreshinsert"});
 	};
 	$.fn.refresh = function(options){
@@ -125,9 +126,11 @@ jQuery.refresh = {
 				//-------------------------------------------------------------------------
 		       		var myScripts = element.find(".temp-script").remove();
 				element.each(function() {myHtml+=$(this).html();});
+				myScriptsHtml = '';
 				myScripts.each(function(){
-					myHtml +='<script type="text/javascript">'+$(this).html()+'</script>';
-				})
+					myScriptsHtml +='<script type="text/javascript">'+$(this).html()+'</script>';
+				});
+				myHtml += myScriptsHtml;
 
 				if(!myHtml) {
 					target.trigger({type:"failrefresh", clickedSelector:options.clickedSelector});
@@ -155,12 +158,12 @@ jQuery.refresh = {
 					
 	    			target.trigger({type:"donerefresh", clickedSelector:options.clickedSelector});
 					options.callback({
-	    				clickedSelector:options.clickedSelector
-	    			});
+	    					clickedSelector:options.clickedSelector
+	    				});
 				});
 
-				if(target[insertFunction]) target[insertFunction](myHtml);
-    				else insertFunction(myHtml);		
+				if(target[insertFunction]) target[insertFunction]({html:myHtml, scripts:myScriptsHtml});
+    				else insertFunction({html:myHtml, scripts:myScriptsHtml});		
 		    	};
 
 			if(!options.html) 
