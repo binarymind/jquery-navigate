@@ -104,7 +104,11 @@ $(document).ready(function() {
 });
 ```	
 
-```be aware that if you select a subpart of the html : $("#my-content", options.html) that remove the inline scripts of the given html, that is why I added the second element in the parameters : options.scripts which are thos scripts if needed.```
+```
+be aware that if you select a subpart of the html : $("#my-content", options.html) 
+that remove the inline scripts of the given html, that is why I added the second element 
+in the parameters : options.scripts which are thos scripts if needed.
+```
 
 * selector for the links to have an ajax behaviour : 
 
