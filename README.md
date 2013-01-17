@@ -89,7 +89,7 @@ There are various possibility of optional customization :
 * ajax-content : (optional) only the content of specified element in href's page will be inserted otherwise all body content
 * ajax-target : (optional) the content will be inserted into the target element of the current page
 
-#### or during the initialization
+#### or during the initialization :
 
 just go to the last lines of the plugin, and modify the $.navigate.init() call as described there, you can change the 
 
@@ -113,6 +113,12 @@ $(document).ready(function() {
 	});
 });
 ```	
+
+```
+be aware that if you select a subpart of the html : $("#my-content", options.html) 
+that remove the inline scripts of the given html, that is why I added the second element 
+in the parameters : options.scripts which are thos scripts if needed.
+```
 
 * selector for the links to have an ajax behaviour : 
 
@@ -154,12 +160,6 @@ $(document).ready(function() {
 	if(document.readyState === "complete") foo();
 	else $(document).ready(foo);
 </script>
-```
-
-```
-be aware that if you select a subpart of the html : $("#my-content", options.html) 
-that remove the inline scripts of the given html, that is why I added the second element 
-in the parameters : options.scripts which are thos scripts if needed.
 ```
 
 ## CREDITS
