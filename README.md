@@ -66,10 +66,20 @@ simply include your
 <script type="text/javascript" src="url/to/navigate.js" ></script>
 ```
 
-after the include to jquery (1.7+) and the plugin will ajax-navigate automaticaly in your website. 
+after the include to jquery (1.7+) and add the code : 
+```javascript
+$(document).ready(function() {
+	$.navigate.init();
+});
+```
 
-Here are now the optional customization : 
+and the plugin will ajax-navigate automaticaly in your website. 
 
+### customization
+
+There are various possibility of optional customization : 
+
+#### in the links : 
 ```html
 <a href="myUrl" ajax-content="any selector" ajax-target="any selector" title="my title">link</a>
 ```
@@ -79,7 +89,7 @@ Here are now the optional customization :
 * ajax-content : (optional) only the content of specified element in href's page will be inserted otherwise all body content
 * ajax-target : (optional) the content will be inserted into the target element of the current page
 
-### OPTIONAL Configuration
+#### or during the initialization
 
 just go to the last lines of the plugin, and modify the $.navigate.init() call as described there, you can change the 
 
@@ -104,12 +114,6 @@ $(document).ready(function() {
 });
 ```	
 
-```
-be aware that if you select a subpart of the html : $("#my-content", options.html) 
-that remove the inline scripts of the given html, that is why I added the second element 
-in the parameters : options.scripts which are thos scripts if needed.
-```
-
 * selector for the links to have an ajax behaviour : 
 
 ```javascript
@@ -132,12 +136,12 @@ $(document).ready(function() {
 		discreteLinks:'a'
 	});
 });
-
 ```
+
 ### Scripts and ajax navigation  
 
 * basically, you will insert all you js in the head of the page
-* You can add anyway any script you want thay will be inserted
+* You can add anyway any inline script you want thay will be inserted
 * However, if you want to have scripts using jquery inside your page do the following : 
 
 ```html
@@ -150,6 +154,12 @@ $(document).ready(function() {
 	if(document.readyState === "complete") foo();
 	else $(document).ready(foo);
 </script>
+```
+
+```
+be aware that if you select a subpart of the html : $("#my-content", options.html) 
+that remove the inline scripts of the given html, that is why I added the second element 
+in the parameters : options.scripts which are thos scripts if needed.
 ```
 
 ## CREDITS
