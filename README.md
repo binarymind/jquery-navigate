@@ -162,5 +162,18 @@ $(document).ready(function() {
 </script>
 ```
 
+### Add correct google analytics stats
+$.navigate.currentReferrer = null;
+$.navigate.currentPage = document.location.pathname;
+$("html").on("donerefresh", 'body',function(e) {
+	if(_gaq) {
+		if($.navigate.currentReferrer==null) $.navigate.currentReferrer = document.referrer;
+		else $.navigate.currentReferrer = ''+$.navigate.currentPage;
+		$.navigate.currentPage = ''+document.location.pathname;
+		_gaq.push(['_setReferrerOverride',$.navigate.currentReferrer]);
+		_gaq.push(['_trackPageview', $.navigate.currentPage]);
+	}
+});
+
 ## CREDITS
 Use of Modernizr and Balupton History.js (https://github.com/balupton/History.js)
