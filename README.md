@@ -163,6 +163,8 @@ $(document).ready(function() {
 ```
 
 ### Add correct google analytics stats
+
+```javascript
 $.navigate.currentReferrer = null;
 $.navigate.currentPage = document.location.pathname;
 $("html").on("donerefresh", 'body',function(e) {
@@ -174,6 +176,7 @@ $("html").on("donerefresh", 'body',function(e) {
 		_gaq.push(['_trackPageview', $.navigate.currentPage]);
 	}
 });
+```
 
 ## CREDITS
 Use of Modernizr and Balupton History.js (https://github.com/balupton/History.js)
