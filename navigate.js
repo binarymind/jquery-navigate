@@ -58,7 +58,8 @@ jQuery.refresh = {
 				clickedSelector:null,
 				callback:function(){},
 				cache:$.refresh.defaultCache, 
-				refreshInsertFunction:$.navigate.defaultInsertFunction
+				refreshInsertFunction:$.navigate.defaultInsertFunction,
+				customData:null
 		},options); 
 		
 
@@ -161,8 +162,8 @@ jQuery.refresh = {
 	    			});
 				});
 
-				if(target[insertFunction]) target[insertFunction]({html:myHtml, scripts:myScriptsHtml});
-    			else insertFunction({html:myHtml, scripts:myScripts});
+				if(target[insertFunction]) target[insertFunction]({html:myHtml, scripts:myScriptsHtml, customData:options.customData});
+    			else insertFunction({html:myHtml, scripts:myScripts, customData:options.customData});
 				
 		    };
 
@@ -261,6 +262,7 @@ jQuery.navigate = {
         			});	
         		},
         		cache:$.navigate.defaultCache, 
+        		customData:State.data.customData
         	};
         	if(State.data.insert) myOptions.refreshInsertFunction = State.data.insert;
 			target.refresh(myOptions);
@@ -340,75 +342,67 @@ jQuery.navigate = {
 	 **/
 	$.fn.navigate = function(options){
 		var me = $(this);
-		if(options) {
-			var myUrl = document.location.href;
-			myUrl = myUrl.replace(myUrl.substring(0, myUrl.lastIndexOf("/") + 1), "");
-				options = $.extend(
-				{
-					html:null,
-					url : myUrl, 
-					content:'body', 
-					title:document.title,
-					target:'body',
-					insert:me.attr("refresh-insert-function") ? me.attr("refresh-insert-function") : null,
-					status:me.attr('refresh-status')
-				},options); 
-				History.pushState(
-				{
-					target:options.target, 
-					content:options.content, 
-					insert:options.insert,
-					status:options.status,
-					clickedSelector:null,
-					html:options.html
-				}, 
-				options.title, options.url
-			);
-		} else {
-			var rel = me.attr("rel");
+		var baseOptions =  {
+			html:null
+		};
 		
-			/* get the ajax content */
-			var content = me.attr('ajax-content');
-			if(!content) content = 'body';
-			
-			/* get the href */
+		/* get the href */
+			//cancel if this is a js link only
 			var href=me.attr('ajax-href');
 			if(!href) href=me.attr('href');
-				
-			/* get the target */
-			var target = me.attr('ajax-target');
-			if(!target) target = me.attr("target");
-			if(!target) target = "body";
 			
-			/* get the title */
-			var title = me.attr('title');
-			if(!title) title=null;
-			
-			/* get the status */
-			var status = $(target).attr('refresh-status');
-			if(!status) status=null;
+			if(href =="javascript://") return true;
+			if(!href) href = document.location.href;
 
-			/* get the insert method */
-			var insert = me.attr('ajax-insert');
-			if(!insert) insert=null;
-					       	
+
 			//ie add the absolute location on href attribute
 			var base = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
 			href = href.replace(base, ""); 
 			
+
 			//don't do anything on links with rel="external" or target = blank or target of potential other domain
-	        if(href=="javascript://") {return true;}	
-	   	 	History.pushState(
-				{
-					target:target, 
-					content:content, 
-					insert:insert,
-					status:status,
-					clickedSelector:me.getSelector()
-				}, 
-				title, href
-			);
-		}
+	   	 	baseOptions.url = href;
+		
+		/* get the ajax content */
+			var content = me.attr('ajax-content');
+			if(!content) content = 'body';
+			baseOptions.content = content;
+
+		/* get the target */
+			var target = me.attr('ajax-target');
+			if(!target) target = me.attr("target");
+			if(!target) target = "body";
+			baseOptions.target = target;
+
+		/* get the title */
+			var title = me.attr('title');
+			if(!title) title=document.title;
+			baseOptions.title = title;
+		
+		/* get the status */
+			var status = $(target).attr('refresh-status');
+			if(!status) status=null;	
+			baseOptions.status = status;
+
+		/* get the insert method */
+			var insert = me.attr('refresh-insert-function');
+			if(!insert) insert=null;
+			baseOptions.insert = insert;
+
+		options = $.extend(baseOptions,options); 
+		History.pushState(
+			{
+				target:options.target, 
+				content:options.content, 
+				insert:options.insert,
+				status:options.status,
+				clickedSelector:null,
+				html:options.html, 
+				customData : options.customData
+			}, 
+			options.title, options.url
+		);
+		
 		return false;
 	};
 })(jQuery);	
