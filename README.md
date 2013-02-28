@@ -99,7 +99,7 @@ just go to the last lines of the plugin, and modify the $.navigate.init() call a
 //how to create a custom function : 
 (function($) {
 	$.fn.insertPageHtml = function(options) {
-		//the option is an array : {html:the ajax html, scripts: the scripts that already are in the html} 
+		//the option is an array : {html:the ajax html, scripts: the scripts that already are in the html, customData:any data you associated to this state during navigate} 
 		//switch elements
 		$('#my-content').html($("#my-content", options.html).html());
 		$(this).trigger({type:"finishrefreshinsert"});
@@ -160,6 +160,18 @@ $(document).ready(function() {
 	if(document.readyState === "complete") foo();
 	else $(document).ready(foo);
 </script>
+```
+### Add any js object to each state you can take back during your refreshInsertFunction
+
+
+```javascript
+var originalNavigateMethod = $.fn.navigate;
+$.fn.navigate = function(options) {
+	if(!options) options = {};
+	options.customData = Math.random(); // = your object stored for this state you have back in you insertFunction
+	originalNavigateMethod.call($(this),options);
+	return false;
+};
 ```
 
 ### Add correct google analytics stats
