@@ -1,4 +1,3 @@
-
 //-------------------------------------------------------------------
 //REFRESH
 //-------------------------------------------------------------------
@@ -392,7 +391,6 @@ jQuery.navigate = {
 			baseOptions.insert = insert;
 
 		options = $.extend(baseOptions,options); 
-		console.log(options);
 		History.pushState(
 			{
 				target:options.target, 
