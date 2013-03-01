@@ -88,6 +88,7 @@ There are various possibility of optional customization :
 * title : the future document title
 * ajax-content : (optional) only the content of specified element in href's page will be inserted otherwise all body content
 * ajax-target : (optional) the content will be inserted into the target element of the current page
+* ajax-insert : (optional) the function that insert the ajax gotten content
 
 #### or during the initialization :
 
