@@ -1,3 +1,4 @@
+
 //-------------------------------------------------------------------
 //REFRESH
 //-------------------------------------------------------------------
@@ -302,7 +303,7 @@ jQuery.navigate = {
 	        return false;
 	    }
 		//Navigate when click
-	    $('html').on("click",$.navigate.ajaxLinks, function(e) {
+	    htmlElement.on("click",$.navigate.ajaxLinks, function(e) {
 	    	var that = $(this);
 	    	return that.navigate();
 	    });
@@ -386,10 +387,12 @@ jQuery.navigate = {
 
 		/* get the insert method */
 			var insert = me.attr('refresh-insert-function');
+			if(!insert) insert = me.attr('ajax-insert')
 			if(!insert) insert=null;
 			baseOptions.insert = insert;
 
 		options = $.extend(baseOptions,options); 
+		console.log(options);
 		History.pushState(
 			{
 				target:options.target, 
