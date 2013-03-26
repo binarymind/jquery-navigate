@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- whatever -->
+  <title>Home</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+  
+  <!-- mobile metas -->
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta content="yes" name="apple-touch-fullscreen" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no">
+  
+  <!-- usualy require.js and stuff but let's make it simple for the example-->
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="./js/modernizr.js"></script>
+  <script src="./js/navigate.js"></script>
+  <!-- look at this example to see some details of the js example -->
+  <script src="./js/example.js"></script>
+</head>
+<body>
+  <div id="info"></div>
+  <header>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="list.html">list</a></li>
+      <li><a href="article.html">article</a></li>
+      <li><a href="article.html" ajax-insert="fadeInsert">fadeInsert article</a></li>
+      <li><a href="error.html">Go to a non existing page</a></li>
+    </ul>
+  </header>
+  <section>
+    <h1>Welcome to the navigate example</h1>
+    <ul>
+      <li>
+        <h2>Climate science</h2>
+        <ul id="list-0">
+            <li id="article-0">
+              <a href="article.html" ajax-content="article" ajax-target="#article-0">
+                Carbon dioxide levels reaches 390.9 ppm in 2011
+              </a>
+            </li>
+            <li id="article-1">
+              <a href="article.html" ajax-content="article" ajax-target="#article-1">
+                Greenland, Antarctica ice melt speeding up
+              </a>
+            </li>
+            <li>
+              <a href="list.html" ajax-target="#list-0" ajax-content="#list" ajax-insert="append">
+                Add more Contents
+              </a>
+            </li>
+        </ul>
+      </li>
+      <li>
+        <h2>Threats to the natural world</h2>
+        <ul id="list-1">
+            <li id="article-2">
+              <a href="article.html" ajax-content="article" ajax-target="#article-2">
+                Rising sea levels puts Nauru at risk
+              </a>
+            </li>
+            <li id="article-3">
+              <a href="article.html" ajax-content="article" ajax-target="#article-3">
+                Drought-stressed trees face race to adapt 
+              </a>
+            </li>
+             <li>
+              <a href="list.html" ajax-target="$(this).parent()" ajax-content="#list" ajax-insert="appendTo">
+                Add more Contents
+              </a>
+            </li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+</footer>
+</body>
+</html>

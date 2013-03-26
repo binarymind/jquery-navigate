@@ -1,3 +1,7 @@
+/* Navigate 
+ * Last version : https://raw.github.com/binarymind/jquery-navigate/master/navigate.js
+ */
+
 //-------------------------------------------------------------------
 //REFRESH
 //-------------------------------------------------------------------
@@ -6,6 +10,7 @@ jQuery.refresh = {
 	refreshTimers : new Array(), 
 	defaultCache : false
 };
+
 (function($) {
 	// get unique selector as #id if have id otherwise create id and return the proper selector
 	$.fn.getSelector = function(){
@@ -161,9 +166,25 @@ jQuery.refresh = {
 	    				clickedSelector:options.clickedSelector
 	    			});
 				});
+				console.log(target);
+				if(target[insertFunction]) {
+					//manage standard jQuery insertion functions
 
-				if(target[insertFunction]) target[insertFunction]({html:myHtml, scripts:myScriptsHtml, customData:options.customData});
-    			else insertFunction({html:myHtml, scripts:myScripts, customData:options.customData});
+					if(insertFunction=="append" ||insertFunction=="prepend"||insertFunction=="html") {
+						target[insertFunction](myHtml);
+						target.trigger({type:"finishrefreshinsert"});
+					} else if(insertFunction == "appendTo" || insertFunction=="prependTo") {
+						$('<div>'+myHtml+'</div>').children().each(function(){
+							$(this)[insertFunction](target);
+						});
+						target.trigger({type:"finishrefreshinsert"});
+					} else {
+						target[insertFunction]({html:myHtml, scripts:myScriptsHtml, customData:options.customData});
+					}
+				}
+    			else if(window[insertFunction]) {
+    				window[insertFunction]({html:myHtml, scripts:myScripts, customData:options.customData});
+    			}
 				
 		    };
 
@@ -302,7 +323,7 @@ jQuery.navigate = {
 	        return false;
 	    }
 		//Navigate when click
-	    htmlElement.on("click",$.navigate.ajaxLinks, function(e) {
+	    $("html").on("click",$.navigate.ajaxLinks, function(e) {
 	    	var that = $(this);
 	    	return that.navigate();
 	    });
@@ -372,6 +393,11 @@ jQuery.navigate = {
 			var target = me.attr('ajax-target');
 			if(!target) target = me.attr("target");
 			if(!target) target = "body";
+			if(target.lastIndexOf("(this)")>0){
+				//in case there is relative selector in target, have to transform that into #id selector
+				target = target.replace('(this)', '("'+$(this).getSelector()+'")');
+				target = eval(target).getSelector();
+			}
 			baseOptions.target = target;
 
 		/* get the title */

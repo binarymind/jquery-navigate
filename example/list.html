@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- whatever -->
+  <title>List</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+  
+  <!-- mobile metas -->
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta content="yes" name="apple-touch-fullscreen" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no">
+  
+  <!-- usualy require.js and stuff but let's make it simple for the example-->
+  <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+  <script src="./js/modernizr.js"></script>
+  <script src="./js/navigate.js"></script>
+  <!-- look at this example to see some details of the js example -->
+  <script src="./js/example.js"></script>
+</head>
+<body>
+  <div id="info"></div>
+  <header>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="list.html">list</a></li>
+      <li><a href="article.html">article</a></li>
+    </ul>
+  </header>
+  <section>
+    <h1>List</h1>
+    <ul id="list">
+      <li>
+        <a href="article.html" >
+          Carbon dioxide levels reaches 390.9 ppm in 2011
+        </a>
+      </li>
+      <li>
+        <a href="article.html" >
+          Greenland, Antarctica ice melt speeding up
+        </a>
+      </li>
+      <li>
+        <a href="article.html" >
+          Carbon dioxide levels reaches 390.9 ppm in 2011
+        </a>
+      </li>
+      <li>
+        <a href="article.html" >
+          Greenland, Antarctica ice melt speeding up
+        </a>
+      </li>
+      <li>
+        <a href="article.html" >
+          Carbon dioxide levels reaches 390.9 ppm in 2011
+        </a>
+      </li>
+      <li>
+        <a href="article.html" >
+          Greenland, Antarctica ice melt speeding up
+        </a>
+      </li>
+      <li>
+        <a href="list.html" ajax-content="#list" ajax-target="$(this).parent()" ajax-insert='prependTo'>
+          Add more news
+        </a>
+      </li>
+    </ul>
+  </section>
+</footer>
+</body>
+</html>
