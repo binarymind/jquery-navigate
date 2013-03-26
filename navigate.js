@@ -172,7 +172,7 @@ jQuery.refresh = {
 						target[insertFunction]({html:myHtml, scripts:myScriptsHtml, customData:options.customData});
 					}
 				}
-    				else insertFunction({html:myHtml, scripts:myScripts, customData:options.customData});
+    				else if(window[insertFunction])window[insertFunction]({html:myHtml, scripts:myScripts, customData:options.customData});
 		    };
 
 			if(!options.html) 
