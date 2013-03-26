@@ -1,3 +1,7 @@
+/* Navigate 
+ * Last version : https://raw.github.com/binarymind/jquery-navigate/master/navigate.js
+ */
+
 //-------------------------------------------------------------------
 //REFRESH
 //-------------------------------------------------------------------
@@ -162,17 +166,26 @@ jQuery.refresh = {
 	    				clickedSelector:options.clickedSelector
 	    			});
 				});
-
+				console.log(target);
 				if(target[insertFunction]) {
 					//manage standard jQuery insertion functions
+
 					if(insertFunction=="append" ||insertFunction=="prepend"||insertFunction=="html") {
 						target[insertFunction](myHtml);
+						target.trigger({type:"finishrefreshinsert"});
+					} else if(insertFunction == "appendTo" || insertFunction=="prependTo") {
+						$('<div>'+myHtml+'</div>').children().each(function(){
+							$(this)[insertFunction](target);
+						});
 						target.trigger({type:"finishrefreshinsert"});
 					} else {
 						target[insertFunction]({html:myHtml, scripts:myScriptsHtml, customData:options.customData});
 					}
 				}
-    				else if(window[insertFunction])window[insertFunction]({html:myHtml, scripts:myScripts, customData:options.customData});
+    			else if(window[insertFunction]) {
+    				window[insertFunction]({html:myHtml, scripts:myScripts, customData:options.customData});
+    			}
+				
 		    };
 
 			if(!options.html) 
@@ -380,6 +393,11 @@ jQuery.navigate = {
 			var target = me.attr('ajax-target');
 			if(!target) target = me.attr("target");
 			if(!target) target = "body";
+			if(target.lastIndexOf("(this)")>0){
+				//in case there is relative selector in target, have to transform that into #id selector
+				target = target.replace('(this)', '("'+$(this).getSelector()+'")');
+				target = eval(target).getSelector();
+			}
 			baseOptions.target = target;
 
 		/* get the title */
