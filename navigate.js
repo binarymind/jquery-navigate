@@ -163,9 +163,16 @@ jQuery.refresh = {
 	    			});
 				});
 
-				if(target[insertFunction]) target[insertFunction]({html:myHtml, scripts:myScriptsHtml, customData:options.customData});
-    			else insertFunction({html:myHtml, scripts:myScripts, customData:options.customData});
-				
+				if(target[insertFunction]) {
+					//manage standard jQuery insertion functions
+					if(insertFunction=="append" ||insertFunction=="prepend"||insertFunction=="html") {
+						target[insertFunction](myHtml);
+						target.trigger({type:"finishrefreshinsert"});
+					} else {
+						target[insertFunction]({html:myHtml, scripts:myScriptsHtml, customData:options.customData});
+					}
+				}
+    				else insertFunction({html:myHtml, scripts:myScripts, customData:options.customData});
 		    };
 
 			if(!options.html) 
