@@ -6,6 +6,7 @@ jQuery.refresh = {
 	refreshTimers : new Array(), 
 	defaultCache : false
 };
+
 (function($) {
 	// get unique selector as #id if have id otherwise create id and return the proper selector
 	$.fn.getSelector = function(){
@@ -302,7 +303,7 @@ jQuery.navigate = {
 	        return false;
 	    }
 		//Navigate when click
-	    htmlElement.on("click",$.navigate.ajaxLinks, function(e) {
+	    $("html").on("click",$.navigate.ajaxLinks, function(e) {
 	    	var that = $(this);
 	    	return that.navigate();
 	    });
