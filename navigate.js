@@ -101,7 +101,15 @@ jQuery.refresh = {
 					check=check[0].replace(/^<body/, '<div');
 					check=check.replace(/body>$/, 'div>');
 				} else check=data;
-				
+
+				//GET THE HEAD
+				var re = /<head[\s\S]*\/head>/;
+				var headHtml=data.match(re);
+				if(headHtml && headHtml.length>0) {
+					headHtml=headHtml[0].replace(/^<head/, '<div');
+					headHtml=headHtml.replace(/head>$/, 'div>');
+					headHtml = $(headHtml).html()
+				} else headHtml="";
 				//Remove the scripts tags
 		       	//-------------------------------------------------------------------------
 		       	check = check.replace(new RegExp('<script', 'g'),'<div class="temp-script"');
@@ -114,7 +122,7 @@ jQuery.refresh = {
 				} else {
 					var element=$(check);
 				}
-				
+
 				var newRefreshId = element.attr("refresh-id");
 
 				if(myRefreshId && newRefreshId && myRefreshId==newRefreshId) {
@@ -161,10 +169,24 @@ jQuery.refresh = {
 	    				clickedSelector:options.clickedSelector
 	    			});
 				});
+				if(target[insertFunction]) {
+					//manage standard jQuery insertion functions
 
-				if(target[insertFunction]) target[insertFunction]({html:myHtml, scripts:myScriptsHtml, customData:options.customData});
-    			else insertFunction({html:myHtml, scripts:myScripts, customData:options.customData});
-				
+					if(insertFunction=="append" ||insertFunction=="prepend"||insertFunction=="html") {
+						target[insertFunction](myHtml);
+						target.trigger({type:"finishrefreshinsert"});
+					} else if(insertFunction == "appendTo" || insertFunction=="prependTo") {
+						$('<div>'+myHtml+'</div>').children().each(function(){
+							$(this)[insertFunction](target);
+						});
+						target.trigger({type:"finishrefreshinsert"});
+					} else {
+						target[insertFunction]({html:myHtml, head:headHtml, scripts:myScriptsHtml, customData:options.customData});
+					}
+				}
+    			else if(window[insertFunction]) {
+    				window[insertFunction]({html:myHtml, head:headHtml, scripts:myScripts, customData:options.customData});
+    			}
 		    };
 
 			if(!options.html) 
@@ -302,7 +324,7 @@ jQuery.navigate = {
 	        return false;
 	    }
 		//Navigate when click
-	    htmlElement.on("click",$.navigate.ajaxLinks, function(e) {
+	    $("html").on("click",$.navigate.ajaxLinks, function(e) {
 	    	var that = $(this);
 	    	return that.navigate();
 	    });

@@ -3,6 +3,7 @@ $(document).ready(function() {
     // Example of a custom ajax insert function
     (function($) {
       $.fn.fadeInsert = function(options) {
+        console.log(options);
         //the option is an array : {html:the ajax html, scripts: the scripts that already are in the html, customData:any data you associated to this state during navigate} 
         var that = $(this);
         that.fadeOut(300, function(){

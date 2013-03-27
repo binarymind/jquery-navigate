@@ -1,7 +1,3 @@
-/* Navigate 
- * Last version : https://raw.github.com/binarymind/jquery-navigate/master/navigate.js
- */
-
 //-------------------------------------------------------------------
 //REFRESH
 //-------------------------------------------------------------------
@@ -10,7 +6,6 @@ jQuery.refresh = {
 	refreshTimers : new Array(), 
 	defaultCache : false
 };
-
 (function($) {
 	// get unique selector as #id if have id otherwise create id and return the proper selector
 	$.fn.getSelector = function(){
@@ -106,7 +101,15 @@ jQuery.refresh = {
 					check=check[0].replace(/^<body/, '<div');
 					check=check.replace(/body>$/, 'div>');
 				} else check=data;
-				
+
+				//GET THE HEAD
+				var re = /<head[\s\S]*\/head>/;
+				var headHtml=data.match(re);
+				if(headHtml && headHtml.length>0) {
+					headHtml=headHtml[0].replace(/^<head/, '<div');
+					headHtml=headHtml.replace(/head>$/, 'div>');
+					headHtml = $(headHtml).html()
+				} else headHtml="";
 				//Remove the scripts tags
 		       	//-------------------------------------------------------------------------
 		       	check = check.replace(new RegExp('<script', 'g'),'<div class="temp-script"');
@@ -119,7 +122,7 @@ jQuery.refresh = {
 				} else {
 					var element=$(check);
 				}
-				
+
 				var newRefreshId = element.attr("refresh-id");
 
 				if(myRefreshId && newRefreshId && myRefreshId==newRefreshId) {
@@ -166,7 +169,6 @@ jQuery.refresh = {
 	    				clickedSelector:options.clickedSelector
 	    			});
 				});
-				console.log(target);
 				if(target[insertFunction]) {
 					//manage standard jQuery insertion functions
 
@@ -179,13 +181,12 @@ jQuery.refresh = {
 						});
 						target.trigger({type:"finishrefreshinsert"});
 					} else {
-						target[insertFunction]({html:myHtml, scripts:myScriptsHtml, customData:options.customData});
+						target[insertFunction]({html:myHtml, head:headHtml, scripts:myScriptsHtml, customData:options.customData});
 					}
 				}
     			else if(window[insertFunction]) {
-    				window[insertFunction]({html:myHtml, scripts:myScripts, customData:options.customData});
+    				window[insertFunction]({html:myHtml, head:headHtml, scripts:myScripts, customData:options.customData});
     			}
-				
 		    };
 
 			if(!options.html) 
@@ -393,11 +394,6 @@ jQuery.navigate = {
 			var target = me.attr('ajax-target');
 			if(!target) target = me.attr("target");
 			if(!target) target = "body";
-			if(target.lastIndexOf("(this)")>0){
-				//in case there is relative selector in target, have to transform that into #id selector
-				target = target.replace('(this)', '("'+$(this).getSelector()+'")');
-				target = eval(target).getSelector();
-			}
 			baseOptions.target = target;
 
 		/* get the title */
