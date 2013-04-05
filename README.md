@@ -191,5 +191,7 @@ $("html").on("donerefresh", 'body',function(e) {
 });
 ```
 
+## HAVE REQUESTS, ISSUES, FEEDBACK ?
+don't hesitate : bastien [[at]] binarymind [[dot]] org or submit issue in github
 ## CREDITS
 Use of Modernizr and Balupton History.js (https://github.com/balupton/History.js)
