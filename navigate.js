@@ -59,7 +59,8 @@ jQuery.refresh = {
 				callback:function(){},
 				cache:$.refresh.defaultCache, 
 				refreshInsertFunction:$.navigate.defaultInsertFunction,
-				customData:null
+				customData:null, 
+				timeout:8000
 		},options); 
 		
 
@@ -195,7 +196,7 @@ jQuery.refresh = {
 				    cache:options.cache,
 				    context:target,
 				    url: targetUrl,
-				    timeout:8000,
+				    timeout:options.timeout,
 				    dataType: "html"})
 		    		.done(myDoneFunc)
 					.fail(function(){
@@ -284,7 +285,8 @@ jQuery.navigate = {
         			});	
         		},
         		cache:$.navigate.defaultCache, 
-        		customData:State.data.customData
+        		customData:State.data.customData, 
+        		timeout:$.navigate.timeout
         	};
         	if(State.data.insert) myOptions.refreshInsertFunction = State.data.insert;
 			target.refresh(myOptions);
@@ -297,13 +299,14 @@ jQuery.navigate = {
 		{
 			ajaxLinks : this.ajaxLinks, 
 			discreteLinks : this.discreteLinks,
-			defaultInsertFunction:$.navigate.defaultInsertFunction
+			defaultInsertFunction:$.navigate.defaultInsertFunction, 
+			timeout:8000
 		},options);
 		this.active = options.active;
 		this.defaultInsertFunction = options.defaultInsertFunction;
 		this.ajaxLinks = options.ajaxLinks;
 		this.discreteLinks = options.discreteLinks;
-		
+		this.timeout = options.timeout;
 		if(typeof options.active == "undefined") {
 			if(typeof Modernizr == "undefined") {
 				console.log('if not specified any other "active" parameter, navigate tests Modernizr.history to get active, Modernizr undefined => navigate will not get active')
