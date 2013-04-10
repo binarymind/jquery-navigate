@@ -1,3 +1,12 @@
+## Overview
+
+jQuery Navigate is a jQuery plugin which goal is to transform any website into a single-page website. It transforms links into turbolinks, it is transparent for the backend and is SEO complient. 
+
+The plugin itself is divided into two submodules : 
+
+* the refresh plugin  : basically the ajax engine
+* the navigate plugin : add the html5 history navigation and transform links into turbolinks. 
+
 ## refresh plugin
 
 The goal of refresh plugin is to simply refresh through an automatic ajax call any element of the page. 
