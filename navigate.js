@@ -111,8 +111,10 @@ jQuery.refresh = {
 					headHtml=headHtml.replace(/head>$/, 'div>');
 					headHtml = $(headHtml).html()
 				} else headHtml="";
+
 				//Remove the scripts tags
 		       	//-------------------------------------------------------------------------
+		       	var scripts = check.match(/<script\b[^>]*>([\s\S]*?)<\/script>/gm);
 		       	check = check.replace(new RegExp('<script', 'g'),'<div class="temp-script"');
 		       	check = check.replace(new RegExp('script>', 'g'),'div>');
 
@@ -137,9 +139,11 @@ jQuery.refresh = {
 		       	var myScripts = element.find(".temp-script").remove();
 				element.each(function() {myHtml+=$(this).html();});
 				myScriptsHtml = '';
-				myScripts.each(function(){
-					myScriptsHtml +='<script type="text/javascript">'+$(this).html()+'</script>';
-				});
+				if(scripts) 
+					for(var i=0;i<scripts.length;i++) {
+						myScriptsHtml += scripts[i];
+					}
+				
 				myHtml += myScriptsHtml;
 				if(!myHtml) {
 					target.trigger({type:"failrefresh", clickedSelector:options.clickedSelector});
