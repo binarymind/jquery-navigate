@@ -146,7 +146,7 @@ jQuery.refresh = {
 				
 				myHtml += myScriptsHtml;
 				if(!myHtml) {
-					target.trigger({type:"failrefresh", clickedSelector:options.clickedSelector});
+					target.trigger({type:"failrefresh", clickedSelector:options.clickedSelector, status:"error"});
 					return;
 				}
 				
@@ -203,10 +203,10 @@ jQuery.refresh = {
 				    timeout:options.timeout,
 				    dataType: "html"})
 		    		.done(myDoneFunc)
-					.fail(function(){
+					.fail(function(jqXHR, textStatus){
 						currentCall.abort();
 						currentCall=null;
-						$(this).trigger({type:"failrefresh", clickedSelector:options.clickedSelector});
+						$(this).trigger({type:"failrefresh", clickedSelector:options.clickedSelector, status:textStatus});
 					});
 			else myDoneFunc(options.html);
 		} else {
