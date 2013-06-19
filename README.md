@@ -25,7 +25,7 @@ Here are all the optional attribute an element that will call the refresh() meth
 
 * `refresh-url` : the url to get the refresh content from (by default : current url)
 * `refresh-id` : if both remote and local refresh-id exists and are the same trigger the `cancelrefresh` event
-* `refresh-insert-function` : the function that will insert the new content and trigger `finishrefreshinsert` event when ready
+* `insert-function` : the function that will insert the new content and trigger `finishrefreshinsert` event when ready
 * `refresh-status` : if different from current div `refresh-status` will trigger the `refreshstatuschanged` event
 * `refresh-interval` : if set, there will be an automatic refresh called each `refresh-interval` millisecond.
 
@@ -38,6 +38,7 @@ $("#my-id").refresh({
     refresh : true, 
     resetInterval : true, 
     url : null,
+    insertFunction:'html', //or any function / inline function, remember to trigger "finishrefreshinsert" event
     content:targetSelector, 
     clickedSelector:null,
     callback:function(){},
@@ -97,7 +98,7 @@ There are various possibility of optional customization :
 * title : the future document title
 * ajax-content : (optional) only the content of specified element in href's page will be inserted otherwise all body content
 * ajax-target : (optional) the content will be inserted into the target element of the current page
-* ajax-insert : (optional) the function that insert the ajax gotten content
+* insert-function : (optional) the function that insert the ajax gotten content
 
 #### or during the initialization :
 
