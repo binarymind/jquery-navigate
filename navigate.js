@@ -61,7 +61,7 @@ jQuery.refresh = {
 				clickedSelector:null,
 				callback:function(){},
 				cache:$.refresh.defaultCache, 
-				refreshInsertFunction:$.navigate.defaultInsertFunction,
+				insertFunction:$.navigate.defaultInsertFunction,
 				customData:null, 
 				timeout:8000
 		},options); 
@@ -162,8 +162,11 @@ jQuery.refresh = {
 				}
 				
 				//GET THE REFRESH INSERT METHOD
+				//TODO for backward compatibility, to delete thereafter
 				var insertFunction = target.attr('refresh-insert-function');
-				if(!insertFunction) insertFunction=options.refreshInsertFunction;//"html";
+				// /TODO
+				if(!insertFunction) insertFunction=target.attr('insert-function');
+				if(!insertFunction) insertFunction=options.insertFunction;//"html";
 				
 				//SWITCH CONTENT
 				target.off("finishrefreshinsert").one("finishrefreshinsert", function() {
@@ -276,9 +279,11 @@ jQuery.navigate = {
 			if(previousState ==null) {
 	        	//first load
 	   	 		//transform clicks to discrete clicks
-				$("body").find($.navigate.discreteLinks).each(function(){
-            				$(this).discreteClick();
-            			});
+				if(typeof Modernizr == 'undefined' || Modernizr.touch) {
+					$("body").find($.navigate.discreteLinks).each(function(){
+	    				$(this).discreteClick();
+	    			});
+				}
 				$("body").refresh({refresh:false});
 				return;
 	   	 	} else {
@@ -293,15 +298,17 @@ jQuery.navigate = {
         		html:State.data.html,
         		clickedSelector:State.data.clickedSelector,
         		callback:function() {
-        			target.find($.navigate.discreteLinks).each(function(){
-        				$(this).discreteClick();
-        			});	
+        			if(typeof Modernizr == 'undefined' || Modernizr.touch) {
+						target.find($.navigate.discreteLinks).each(function(){
+	        				$(this).discreteClick();
+	        			});
+					}
         		},
         		cache:$.navigate.defaultCache, 
         		customData:State.data.customData, 
         		timeout:$.navigate.timeout
         	};
-        	if(State.data.insert) myOptions.refreshInsertFunction = State.data.insert;
+        	if(State.data.insertFunction) myOptions.insertFunction = State.data.insertFunction;
 			target.refresh(myOptions);
 	        
 	        //done
@@ -423,17 +430,21 @@ jQuery.navigate = {
 			baseOptions.status = status;
 
 		/* get the insert method */
-			var insert = me.attr('refresh-insert-function');
-			if(!insert) insert = me.attr('ajax-insert')
-			if(!insert) insert=null;
-			baseOptions.insert = insert;
+			//TODO to delete there after, backward compatibility only
+			var insertFunction = me.attr('refresh-insert-function');
+			if(!insertFunction) insertFunction = me.attr('ajax-insert');
+			// /TODO
+			if(!insertFunction) insertFunction = me.attr('insert-function');
+			
+			if(!insertFunction) insertFunction=null;
+			baseOptions.insertFunction = insertFunction;
 
 		options = $.extend(baseOptions,options); 
 		History.pushState(
 			{
 				target:options.target, 
 				content:options.content, 
-				insert:options.insert,
+				insertFunction:options.insertFunction,
 				status:options.status,
 				clickedSelector:null,
 				html:options.html, 
