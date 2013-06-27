@@ -58,7 +58,7 @@ jQuery.refresh = {
 				resetInterval : true, 
 				url : null,
 				content:targetSelector, 
-				clickedSelector:null,
+				clickedSelector:$(this).getSelector(),
 				callback:function(){},
 				cache:$.refresh.defaultCache, 
 				insertFunction:$.navigate.defaultInsertFunction,
@@ -446,7 +446,7 @@ jQuery.navigate = {
 				content:options.content, 
 				insertFunction:options.insertFunction,
 				status:options.status,
-				clickedSelector:null,
+				clickedSelector:$(this).getSelector(),
 				html:options.html, 
 				customData : options.customData
 			}, 
@@ -455,7 +455,8 @@ jQuery.navigate = {
 		
 		return false;
 	};
-})(jQuery);	
+})(jQuery);
+
 /*
 $(document).ready(function() {
 	//normal use : 
