@@ -200,11 +200,23 @@ jQuery.refresh = {
 						});
 						target.trigger({type:"finishrefreshinsert"});
 					} else {
-						target[insertFunction]({html:myHtml, head:headHtml, scripts:myScriptsHtml, customData:options.customData});
+						target[insertFunction]({
+							html:myHtml, 
+							head:headHtml, 
+							scripts:myScriptsHtml, 
+							customData:options.customData,
+  	  						class:element.attr("class")
+						});
 					}
 				}
     			else if(window[insertFunction]) {
-    				window[insertFunction]({html:myHtml, head:headHtml, scripts:myScripts, customData:options.customData});
+    				window[insertFunction]({
+    					html:myHtml, 
+    					head:headHtml, 
+    					scripts:myScripts, 
+    					customData:options.customData,
+    					class:element.attr("class")
+    				});
     			}
 		    };
 
