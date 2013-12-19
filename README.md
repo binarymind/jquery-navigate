@@ -20,7 +20,7 @@ The website <a href="http://mobile.interflora.fr">Interflora mobile</a> using a 
 Here are all the optional attribute an element that will call the refresh() method can have :
 
 ```html
-<div refresh-url="any-url" refresh-url="anything you want" refresh-insert-function="any jquery function or plain function" refresh-status="any-string" refresh-interval="any-number"></div>
+<div refresh-url="any-url" refresh-id="anything you want" refresh-insert-function="any jquery function or plain function" refresh-status="any-string" refresh-interval="any-number"></div>
 ```
 
 * `refresh-url` : the url to get the refresh content from (by default : current url)
