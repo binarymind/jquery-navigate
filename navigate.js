@@ -5,479 +5,466 @@ window.JSON||(window.JSON={}),function(){function f(a){return a<10?"0"+a:a}funct
 //REFRESH
 //-------------------------------------------------------------------
 jQuery.refresh = {
-	ajaxCalls : new Array(), 
-	refreshTimers : new Array(), 
-	defaultCache : false
+  ajaxCalls : new Array(), 
+  refreshTimers : new Array(), 
+  defaultCache : false
 };
 (function($) {
-	// get unique selector as #id if have id otherwise create id and return the proper selector
-	$.fn.getSelector = function(){
-		var me=$(this);
-		if(me.is("body")) {return 'body';} else
-		if(!$.isWindow(me[0])){	
-			var toReturn = me.attr('id'); if(!toReturn){toReturn = "me-" + Math.floor(Math.random()*1000000); me.attr('id', toReturn);}
-			me=null;
-			return '#'+toReturn;
-		} else {me=null;return window;} //this is the window
-	};
-	$.fn.stopRefresh = function(options){
-		var target = $(this);
-		target.trigger("stoprefresh");
-		var targetSelector = target.getSelector();
-		var targetRefreshTimer = $.refresh.refreshTimers[targetSelector];
-		//first reset the timer
-		if(targetRefreshTimer) {
-			clearInterval(targetRefreshTimer);
-			delete targetRefreshTimer;
-		}
-		//then reset the current call
-		var currentCall = $.refresh.ajaxCalls[targetSelector];
-		if(currentCall) {
-			currentCall.abort();
-			delete currentCall;
-		}
-	};
+  // get unique selector as #id if have id otherwise create id and return the proper selector
+  $.fn.getSelector = function(){
+    var me=$(this);
+    if(me.is("body")) {return 'body';} else
+    if(!$.isWindow(me[0])){ 
+      var toReturn = me.attr('id'); if(!toReturn){toReturn = "me-" + Math.floor(Math.random()*1000000); me.attr('id', toReturn);}
+      me=null;
+      return '#'+toReturn;
+    } else {me=null;return window;} //this is the window
+  };
+  $.fn.stopRefresh = function(options){
+    var target = $(this);
+    target.trigger("stoprefresh");
+    var targetSelector = target.getSelector();
+    var targetRefreshTimer = $.refresh.refreshTimers[targetSelector];
+    //first reset the timer
+    if(targetRefreshTimer) {
+      clearInterval(targetRefreshTimer);
+      delete targetRefreshTimer;
+    }
+    //then reset the current call
+    var currentCall = $.refresh.ajaxCalls[targetSelector];
+    if(currentCall) {
+      currentCall.abort();
+      delete currentCall;
+    }
+  };
     $.fn.defaultRefreshInsert = function(options) {
-    	//options = {html:value, scripts:value}
-    	$(this).html(options.html);
+      //options = {html:value, scripts:value}
+      $(this).html(options.html);
         $(this).trigger({type:"finishrefreshinsert"});
 
     };
     $.fn.refresh = function(options){
-		var target = $(this);
-		var targetSelector = target.getSelector();
-		if(typeof options == "boolean") {
-			options = {refresh:options};
-			//force refresh : options=true or options.refresh==true
-		} 
-		//else if(typeof options=="undefined") options = {};
-			options = $.extend(
-			{
-				html : null,
-				refresh : target, 
-				resetInterval : true, 
-				url : null,
-				content:targetSelector, 
-				clickedSelector:$(this).getSelector(),
-				callback:function(){},
-				cache:$.refresh.defaultCache, 
-				insertFunction:$.navigate.defaultInsertFunction,
-				customData:null, 
-				timeout:8000
-		},options); 
-		
+    var target = $(this);
+    var targetSelector = target.getSelector();
+    if(typeof options == "boolean") {
+      options = {refresh:options};
+      //force refresh : options=true or options.refresh==true
+    } 
+    //else if(typeof options=="undefined") options = {};
+      options = $.extend(
+      {
+        html : null,
+        refresh : target, 
+        resetInterval : true, 
+        url : null,
+        content:targetSelector, 
+        clickedSelector:$(this).getSelector(),
+        callback:function(){},
+        cache:$.refresh.defaultCache, 
+        insertFunction:$.navigate.defaultInsertFunction,
+        customData:null, 
+        timeout:8000
+    },options); 
+    
 
-		//WE REFRESH OR NOT
-		//----------------------------------------------------------------------
-		//check if we do have to refresh
-		var refreshFunction = target.attr("refresh-function");
-		if(typeof refreshFunction != "undefined") {
-			//SWITCH CONTENT
-			if(target[refreshFunction]) target[refreshFunction]();
-			else refreshFunction();
-		} else if(options.refresh) {
-			var currentCall = $.refresh.ajaxCalls[targetSelector];
-			if(currentCall) {
-				target.trigger("stoprefresh");
-				currentCall.abort();
-			}
-			
-			//get the url to call, in order : 
-				//1 - the option
-				//2 - the refresh-url attribute
-				//3 - the current location
-			var targetUrl = options.url;
-			if(!targetUrl) {
-				var refreshUrl = target.attr("refresh-url");
-				if(refreshUrl) targetUrl = refreshUrl;
-				else targetUrl = window.location.href;
-			}
-			var myRefreshId = target.attr("refresh-id");
-			target.trigger({type:"startrefresh", clickedSelector:options.clickedSelector});
-			
-			var myDoneFunc = function(data) {
-    			currentCall = null;
-    			//Remove the body tag not to load all scripts and header of the loaded page
-		       	//-------------------------------------------------------------------------
-		       	var re = /<body[\s\S]*\/body>/;
-				var check=data.match(re);
-				if(check && check.length>0) {
-					check=check[0].replace(/^<body/, '<div');
-					check=check.replace(/body>$/, 'div>');
-				} else check=data;
+    //WE REFRESH OR NOT
+    //----------------------------------------------------------------------
+    //check if we do have to refresh
+    var refreshFunction = target.attr("data-refresh-function");
+    if(typeof refreshFunction != "undefined") {
+      //SWITCH CONTENT
+      if(target[refreshFunction]) target[refreshFunction]();
+      else refreshFunction();
+    } else if(options.refresh) {
+      var currentCall = $.refresh.ajaxCalls[targetSelector];
+      if(currentCall) {
+        target.trigger("stoprefresh");
+        currentCall.abort();
+      }
+      
+      //get the url to call, in order : 
+        //1 - the option
+        //2 - the refresh-url attribute
+        //3 - the current location
+      var targetUrl = options.url;
+      if(!targetUrl) {
+        var refreshUrl = target.attr("data-refresh-url");
+        if(refreshUrl) targetUrl = refreshUrl;
+        else targetUrl = window.location.href;
+      }
+      var myRefreshId = target.attr("data-refresh-id");
+      target.trigger({type:"startrefresh", clickedSelector:options.clickedSelector});
+      
+      var myDoneFunc = function(data) {
+          currentCall = null;
+          //Remove the body tag not to load all scripts and header of the loaded page
+            //-------------------------------------------------------------------------
+            var re = /<body[\s\S]*\/body>/;
+        var check=data.match(re);
+        if(check && check.length>0) {
+          check=check[0].replace(/^<body/, '<div');
+          check=check.replace(/body>$/, 'div>');
+        } else check=data;
 
-				//GET THE HEAD
-				var re = /<head[\s\S]*\/head>/;
-				var headHtml=data.match(re);
-				if(headHtml && headHtml.length>0) {
-					headHtml=headHtml[0].replace(/^<head/, '<div');
-					headHtml=headHtml.replace(/head>$/, 'div>');
-					headHtml = $(headHtml).html()
-				} else headHtml="";
+        //GET THE HEAD
+        var re = /<head[\s\S]*\/head>/;
+        var headHtml=data.match(re);
+        if(headHtml && headHtml.length>0) {
+          headHtml=headHtml[0].replace(/^<head/, '<div');
+          headHtml=headHtml.replace(/head>$/, 'div>');
+          headHtml = $(headHtml).html()
+        } else headHtml="";
 
-				//Remove the scripts tags
-		       	//-------------------------------------------------------------------------
-		       	var noscripts = check.match(/<noscript\b[^>]*>([\s\S]*?)<\/noscript>/gm);
-		       	check = check.replace(new RegExp('<noscript', 'g'),'<div class="temp-script"');
-		       	check = check.replace(new RegExp('noscript>', 'g'),'div>');
+        //Remove the scripts tags
+            //-------------------------------------------------------------------------
+            var noscripts = check.match(/<noscript\b[^>]*>([\s\S]*?)<\/noscript>/gm);
+            check = check.replace(new RegExp('<noscript', 'g'),'<div class="temp-script"');
+            check = check.replace(new RegExp('noscript>', 'g'),'div>');
 
-		       	var scripts = check.match(/<script\b[^>]*>([\s\S]*?)<\/script>/gm);
-		       	check = check.replace(new RegExp('<script', 'g'),'<div class="temp-script"');
-		       	check = check.replace(new RegExp('script>', 'g'),'div>');
+            var scripts = check.match(/<script\b[^>]*>([\s\S]*?)<\/script>/gm);
+            check = check.replace(new RegExp('<script', 'g'),'<div class="temp-script"');
+            check = check.replace(new RegExp('script>', 'g'),'div>');
 
-				//get the wanted content
-				//-------------------------------------------------------------------------
-		       	if(options.content != 'body') {
-					var element=$(options.content, '<div>'+check+'</div>');//check).find(State.data.content);
-				} else {
-					var element=$(check);
-				}
+        //get the wanted content
+        //-------------------------------------------------------------------------
+            if(options.content != 'body') {
+          var element=$(options.content, '<div>'+check+'</div>');//check).find(State.data.content);
+        } else {
+          var element=$(check);
+        }
 
-				var newRefreshId = element.attr("refresh-id");
+        var newRefreshId = element.attr("data-refresh-id");
 
-				if(myRefreshId && newRefreshId && myRefreshId==newRefreshId) {
-					target.trigger({type:"cancelrefresh", clickedSelector:options.clickedSelector});
-					return;
-				}
-				var myHtml = '';
-				
-				//add again the inline scripts to the wanted html
-				//-------------------------------------------------------------------------
-		       	var myScripts = element.find(".temp-script").remove();
-				element.each(function() {myHtml+=$(this).html();});
-				myScriptsHtml = '';
-				if(scripts) 
-					for(var i=0;i<scripts.length;i++) {
-						myScriptsHtml += scripts[i];
-					}
-				if(noscripts) 
-					for(var i=0;i<noscripts.length;i++) {
-						myScriptsHtml += noscripts[i];
-					}
-				
-				myHtml += myScriptsHtml;
-				if(!myHtml) {
-					target.trigger({type:"failrefresh", clickedSelector:options.clickedSelector, status:"error"});
-					return;
-				}
-				
-				//GET THE REFRESH INSERT METHOD
-				//TODO for backward compatibility, to delete thereafter
-				var insertFunction = target.attr('refresh-insert-function');
-				// /TODO
-				if(!insertFunction) insertFunction=target.attr('insert-function');
-				if(!insertFunction) insertFunction=options.insertFunction;//"html";
-				
-				//SWITCH CONTENT
-				target.off("finishrefreshinsert").one("finishrefreshinsert", function() {
-					//check status
-	    			var newRefreshStatus = element.attr("refresh-status");
-					var currentStatus = target.attr("refresh-status");
-					if(newRefreshStatus && currentStatus != newRefreshStatus) {
-						target.trigger({
-							type:"refreshstatuschanged",
-							clickedSelector:options.clickedSelector,
-							oldStatus:currentStatus, 
-							newStatus:newRefreshStatus
-						});
-						//target.trigger("refreshstatuschanged", options.clickedSelector);
-					} 
-					
-	    			target.trigger({type:"donerefresh", clickedSelector:options.clickedSelector});
-					options.callback({
-	    				clickedSelector:options.clickedSelector
-	    			});
-				});
-				if(target[insertFunction]) {
-					//manage standard jQuery insertion functions
+        if(myRefreshId && newRefreshId && myRefreshId==newRefreshId) {
+          target.trigger({type:"cancelrefresh", clickedSelector:options.clickedSelector});
+          return;
+        }
+        var myHtml = '';
+        
+        //add again the inline scripts to the wanted html
+        //-------------------------------------------------------------------------
+            var myScripts = element.find(".temp-script").remove();
+        element.each(function() {myHtml+=$(this).html();});
+        myScriptsHtml = '';
+        if(scripts) 
+          for(var i=0;i<scripts.length;i++) {
+            myScriptsHtml += scripts[i];
+          }
+        if(noscripts) 
+          for(var i=0;i<noscripts.length;i++) {
+            myScriptsHtml += noscripts[i];
+          }
+        
+        myHtml += myScriptsHtml;
+        if(!myHtml) {
+          target.trigger({type:"failrefresh", clickedSelector:options.clickedSelector, status:"error"});
+          return;
+        }
+        
+        //GET THE REFRESH INSERT METHOD
+        //TODO for backward compatibility, to delete thereafter
+        var insertFunction = target.attr('data-refresh-insert-function');
+        // /TODO
+        if(!insertFunction) insertFunction=target.attr('data-insert-function');
+        if(!insertFunction) insertFunction=options.insertFunction;//"html";
+        
+        //SWITCH CONTENT
+        target.off("finishrefreshinsert").one("finishrefreshinsert", function() {
+          //check status
+            var newRefreshStatus = element.attr("data-refresh-status");
+          var currentStatus = target.attr("data-refresh-status");
+          if(newRefreshStatus && currentStatus != newRefreshStatus) {
+            target.trigger({
+              type:"refreshstatuschanged",
+              clickedSelector:options.clickedSelector,
+              oldStatus:currentStatus, 
+              newStatus:newRefreshStatus
+            });
+            //target.trigger("refreshstatuschanged", options.clickedSelector);
+          } 
+          
+            target.trigger({type:"donerefresh", clickedSelector:options.clickedSelector});
+          options.callback({
+              clickedSelector:options.clickedSelector
+            });
+        });
+        if(target[insertFunction]) {
+          //manage standard jQuery insertion functions
 
-					if(insertFunction=="append" ||insertFunction=="prepend"||insertFunction=="html") {
-						target[insertFunction](myHtml);
-						target.trigger({type:"finishrefreshinsert"});
-					} else if(insertFunction == "appendTo" || insertFunction=="prependTo") {
-						$('<div>'+myHtml+'</div>').children().each(function(){
-							$(this)[insertFunction](target);
-						});
-						target.trigger({type:"finishrefreshinsert"});
-					} else {
-						target[insertFunction]({
-							html:myHtml, 
-							head:headHtml, 
-							scripts:myScriptsHtml, 
-							customData:options.customData,
-  	  						class:element.attr("class")
-						});
-					}
-				}
-    			else if(window[insertFunction]) {
-    				window[insertFunction]({
-    					html:myHtml, 
-    					head:headHtml, 
-    					scripts:myScripts, 
-    					customData:options.customData,
-    					class:element.attr("class")
-    				});
-    			}
-		    };
+          if(insertFunction=="append" ||insertFunction=="prepend"||insertFunction=="html") {
+            target[insertFunction](myHtml);
+            target.trigger({type:"finishrefreshinsert"});
+          } else if(insertFunction == "appendTo" || insertFunction=="prependTo") {
+            $('<div>'+myHtml+'</div>').children().each(function(){
+              $(this)[insertFunction](target);
+            });
+            target.trigger({type:"finishrefreshinsert"});
+          } else {
+            target[insertFunction]({
+              html:myHtml, 
+              head:headHtml, 
+              scripts:myScriptsHtml, 
+              customData:options.customData,
+                  class:element.attr("class")
+            });
+          }
+        }
+          else if(window[insertFunction]) {
+            window[insertFunction]({
+              html:myHtml, 
+              head:headHtml, 
+              scripts:myScripts, 
+              customData:options.customData,
+              class:element.attr("class")
+            });
+          }
+        };
 
-			if(!options.html) 
-				currentCall= $.ajax({
-				    type: "GET",
-				    cache:options.cache,
-				    context:target,
-				    url: targetUrl,
-				    timeout:options.timeout,
-				    dataType: "html"})
-		    		.done(myDoneFunc)
-					.fail(function(jqXHR, textStatus){
-						currentCall.abort();
-						currentCall=null;
-						$(this).trigger({type:"failrefresh", clickedSelector:options.clickedSelector, status:textStatus});
-					});
-			else myDoneFunc(options.html);
-		} else {
-			target.trigger({type:"donerefresh", clickedSelector:options.clickedSelector});
-		}
+      if(!options.html) 
+        currentCall= $.ajax({
+            type: "GET",
+            cache:options.cache,
+            context:target,
+            url: targetUrl,
+            timeout:options.timeout,
+            dataType: "html"})
+            .done(myDoneFunc)
+          .fail(function(jqXHR, textStatus){
+            currentCall.abort();
+            currentCall=null;
+            $(this).trigger({type:"failrefresh", clickedSelector:options.clickedSelector, status:textStatus});
+          });
+      else myDoneFunc(options.html);
+    } else {
+      target.trigger({type:"donerefresh", clickedSelector:options.clickedSelector});
+    }
 
-		//CLEAN CURRENT TIMER IF MANUAL FORCE REFRESH
-		//----------------------------------------------------------------------
-		var refreshTimer = $.refresh.refreshTimers[targetSelector];
-		if(options.resetInterval && refreshTimer) {
-			//if we force the refresh and a timer exists, we clear the current timer
-			 clearInterval(refreshTimer);
-			 delete refreshTimer;
-		}
+    //CLEAN CURRENT TIMER IF MANUAL FORCE REFRESH
+    //----------------------------------------------------------------------
+    var refreshTimer = $.refresh.refreshTimers[targetSelector];
+    if(options.resetInterval && refreshTimer) {
+      //if we force the refresh and a timer exists, we clear the current timer
+       clearInterval(refreshTimer);
+       delete refreshTimer;
+    }
 
-		//CHECK IF WE SET A REFRESH INTERVAL TIMER
-		//----------------------------------------------------------------------
-		var refreshTimerTime = target.attr('refresh-interval');
-		if(!refreshTimerTime) return;
-		refreshTimerTime = parseInt(refreshTimerTime);
-		if(options.resetInterval && refreshTimerTime>0) {
-			
-			//set timer refresh for this target
-			$.refresh.refreshTimers[targetSelector] = setInterval(function(){
-				target.refresh({refresh:true, resetInterval : false});
-			},refreshTimerTime);
-		}
-		
-	};	
-})(jQuery);	
+    //CHECK IF WE SET A REFRESH INTERVAL TIMER
+    //----------------------------------------------------------------------
+    var refreshTimerTime = target.attr('data-refresh-interval');
+    if(!refreshTimerTime) return;
+    refreshTimerTime = parseInt(refreshTimerTime);
+    if(options.resetInterval && refreshTimerTime>0) {
+      
+      //set timer refresh for this target
+      $.refresh.refreshTimers[targetSelector] = setInterval(function(){
+        target.refresh({refresh:true, resetInterval : false});
+      },refreshTimerTime);
+    }
+    
+  };  
+})(jQuery); 
 
 // -------------------------------------------------------------------
 // NAVIGATE
 // -------------------------------------------------------------------
 
 jQuery.navigate = {
-	active:false,
-	historyStates : new Array(),
-	defaultCache:true,
-	ajaxLinks : 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink',
-	discreteLinks : 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink',
-	defaultInsertFunction:'defaultRefreshInsert',
-	stateChanged : function(event){ // Note: We are using statechange instead of popstate
-	   	 	var State = History.getState(false, false);
-	   	 	var reverse = History.getState().internal == false;
-			
-			//get target and content
-	       	var target = State.data.target ? $(State.data.target) : $("body");
-	       	var content = State.data.content ? ' '+State.data.content : '';
-	      	
-	        //get previous state
-	        var previousState = null;
-	        if(History.savedStates.length>1)
-	        	previousState = History.getStateByIndex(-2);
-	       
-			if(previousState ==null) {
-	        	//first load
-	   	 		//transform clicks to discrete clicks
-				if(typeof Modernizr == 'undefined' || Modernizr.touch) {
-					$("body").find($.navigate.discreteLinks).each(function(){
-	    				$(this).discreteClick();
-	    			});
-				}
-				$("body").refresh({refresh:false});
-				return;
-	   	 	} else {
-	   	 		var previousTarget = previousState.data.target ? $(previousState.data.target) : $("body");
-	   	 		previousTarget.stopRefresh();
-	   	 	}
-	   	 	var myOptions = {
-        		refresh:true, 
-        		url:State.url, 
-        		content:State.data.content,
-        		status:State.data.status, 
-        		html:State.data.html,
-        		clickedSelector:State.data.clickedSelector,
-        		callback:function() {
-        			if(typeof Modernizr == 'undefined' || Modernizr.touch) {
-						target.find($.navigate.discreteLinks).each(function(){
-	        				$(this).discreteClick();
-	        			});
-					}
-        		},
-        		cache:$.navigate.defaultCache, 
-        		customData:State.data.customData, 
-        		timeout:$.navigate.timeout
-        	};
-        	if(State.data.insertFunction) myOptions.insertFunction = State.data.insertFunction;
-			target.refresh(myOptions);
-	        
-	        //done
-	        return false;
-	    },
-	init:function(options) {
-		options = $.extend(
-		{
-			ajaxLinks : this.ajaxLinks, 
-			discreteLinks : this.discreteLinks,
-			defaultInsertFunction:$.navigate.defaultInsertFunction, 
-			timeout:8000
-		},options);
-		this.active = options.active;
-		this.defaultInsertFunction = options.defaultInsertFunction;
-		this.ajaxLinks = options.ajaxLinks;
-		this.discreteLinks = options.discreteLinks;
-		this.timeout = options.timeout;
-		if(typeof options.active == "undefined") {
-			if(typeof Modernizr == "undefined") {
-				console.log('if not specified any other "active" parameter, navigate tests Modernizr.history to get active, Modernizr undefined => navigate will not get active')
-				this.active = false;
-			} else {
-				this.active = Modernizr.history;
-			}
-		}
-		if(!this.active) {
-			$("body").trigger("donerefresh");
-			return;
-		}
-		// Prepare HISTORY
-	    var History = window.History; // Note: We are using a capital H instead of a lower h
-	    if ( !History.enabled ) {
-	         // History.js is disabled for this browser.
-	         // This is because we can optionally choose to support HTML4 browsers or not.
-	        return false;
-	    }
-		//Navigate when click
-	    $("html").on("click",$.navigate.ajaxLinks, function(e) {
-	    	var that = $(this);
-	    	return that.navigate();
-	    });
+  active:false,
+  historyStates : new Array(),
+  defaultCache:true,
+  ajaxLinks : 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink',
+  discreteLinks : 'a:not(.noAjax)[rel!="external"][target!="_blank"], .ajaxLink',
+  defaultInsertFunction:'defaultRefreshInsert',
+  stateChanged : function(event){ // Note: We are using statechange instead of popstate
+        var State = History.getState(false, false);
+        var reverse = History.getState().internal == false;
+      
+      //get target and content
+          var target = State.data.target ? $(State.data.target) : $("body");
+          var content = State.data.content ? ' '+State.data.content : '';
+          
+          //get previous state
+          var previousState = null;
+          if(History.savedStates.length>1)
+            previousState = History.getStateByIndex(-2);
+         
+      if(previousState ==null) {
+            //first load
+          //transform clicks to discrete clicks
+        if(typeof Modernizr == 'undefined' || Modernizr.touch) {
+          $("body").find($.navigate.discreteLinks).each(function(){
+              $(this).discreteClick();
+            });
+        }
+        $("body").refresh({refresh:false});
+        return;
+        } else {
+          var previousTarget = previousState.data.target ? $(previousState.data.target) : $("body");
+          previousTarget.stopRefresh();
+        }
+        var myOptions = {
+            refresh:true, 
+            url:State.url, 
+            content:State.data.content,
+            status:State.data.status, 
+            html:State.data.html,
+            clickedSelector:State.data.clickedSelector,
+            callback:function() {
+              if(typeof Modernizr == 'undefined' || Modernizr.touch) {
+            target.find($.navigate.discreteLinks).each(function(){
+                  $(this).discreteClick();
+                });
+          }
+            },
+            cache:$.navigate.defaultCache, 
+            customData:State.data.customData, 
+            timeout:$.navigate.timeout
+          };
+          if(State.data.insertFunction) myOptions.insertFunction = State.data.insertFunction;
+      target.refresh(myOptions);
+          
+          //done
+          return false;
+      },
+  init:function(options) {
+    options = $.extend(
+    {
+      ajaxLinks : this.ajaxLinks, 
+      discreteLinks : this.discreteLinks,
+      defaultInsertFunction:$.navigate.defaultInsertFunction, 
+      timeout:8000
+    },options);
+    this.active = options.active;
+    this.defaultInsertFunction = options.defaultInsertFunction;
+    this.ajaxLinks = options.ajaxLinks;
+    this.discreteLinks = options.discreteLinks;
+    this.timeout = options.timeout;
+    if(typeof options.active == "undefined") {
+      if(typeof Modernizr == "undefined") {
+        console.log('if not specified any other "active" parameter, navigate tests Modernizr.history to get active, Modernizr undefined => navigate will not get active')
+        this.active = false;
+      } else {
+        this.active = Modernizr.history;
+      }
+    }
+    if(!this.active) {
+      $("body").trigger("donerefresh");
+      return;
+    }
+    // Prepare HISTORY
+      var History = window.History; // Note: We are using a capital H instead of a lower h
+      if ( !History.enabled ) {
+           // History.js is disabled for this browser.
+           // This is because we can optionally choose to support HTML4 browsers or not.
+          return false;
+      }
+    //Navigate when click
+      $("html").on("click",$.navigate.ajaxLinks, function(e) {
+        var that = $(this);
+        return that.navigate();
+      });
 
-	    // Bind to StateChange Event
-	   History.Adapter.bind(window,'statechange',$.navigate.stateChanged);
-		
-	   //push the first state
-	   $.navigate.stateChanged();
-	}
+      // Bind to StateChange Event
+     History.Adapter.bind(window,'statechange',$.navigate.stateChanged);
+    
+     //push the first state
+     $.navigate.stateChanged();
+  }
 };
 (function($) {
-	// get unique selector as #id if have id otherwise create id and return the proper selector
-	$.fn.getSelector = function(){
-		var me=$(this);
-		if(me.is("body")) {return 'body';} else
-		if(!$.isWindow(me[0])){	
-			var toReturn = me.attr('id'); if(!toReturn){toReturn = "me-" + Math.floor(Math.random()*1000000); me.attr('id', toReturn);}
-			me=null;
-			return '#'+toReturn;
-		} else {me=null;return window;} //this is the window
-	};
-	$.fn.discreteClick = function(){
-		var that = $(this);
-		if(that.attr("href") !="javascript://") {
-	    	that.attr("ajax-href", that.attr("href"));
-	    	that.attr("href", "javascript://");
-		}
-	};
-	
-	/**
-	 * This function navigate in ajax thanks to the data of this element
-	 * target : the jquery selector in which we insert the data
-	 * href : the url from which we take the data
-	 * content : the jquery selector in the href page from which we take the data
-	 * title : the page new title
-	 **/
-	$.fn.navigate = function(options){
-		var me = $(this);
-		var baseOptions =  {
-			html:null
-		};
-		
-		/* get the href */
-			//cancel if this is a js link only
-			var href=me.attr('ajax-href');
-			if(!href) href=me.attr('href');
-			
-			if(href =="javascript://") return true;
-			if(!href) href = document.location.href;
+  // get unique selector as #id if have id otherwise create id and return the proper selector
+  $.fn.getSelector = function(){
+    var me=$(this);
+    if(me.is("body")) {return 'body';} else
+    if(!$.isWindow(me[0])){ 
+      var toReturn = me.attr('id'); if(!toReturn){toReturn = "me-" + Math.floor(Math.random()*1000000); me.attr('id', toReturn);}
+      me=null;
+      return '#'+toReturn;
+    } else {me=null;return window;} //this is the window
+  };
+  $.fn.discreteClick = function(){
+    var that = $(this);
+    if(that.attr("href") !="javascript://") {
+        that.attr("ajax-href", that.attr("href"));
+        that.attr("href", "javascript://");
+    }
+  };
+  
+  /**
+   * This function navigate in ajax thanks to the data of this element
+   * target : the jquery selector in which we insert the data
+   * href : the url from which we take the data
+   * content : the jquery selector in the href page from which we take the data
+   * title : the page new title
+   **/
+  $.fn.navigate = function(options){
+    var me = $(this);
+    var baseOptions =  {
+      html:null
+    };
+    
+    /* get the href */
+      //cancel if this is a js link only
+      var href=me.attr('data-ajax-href');
+      if(!href) href=me.attr('href');
+      
+      if(href =="javascript://") return true;
+      if(!href) href = document.location.href;
 
 
-			//ie add the absolute location on href attribute
-			var base = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
-			href = href.replace(base, ""); 
-			
+      //ie add the absolute location on href attribute
+      var base = window.location.href.substring(0, window.location.href.lastIndexOf("/") + 1);
+      href = href.replace(base, ""); 
+      
 
-			//don't do anything on links with rel="external" or target = blank or target of potential other domain
-	   	 	baseOptions.url = href;
-		
-		/* get the ajax content */
-			var content = me.attr('ajax-content');
-			if(!content) content = 'body';
-			baseOptions.content = content;
+      //don't do anything on links with rel="external" or target = blank or target of potential other domain
+        baseOptions.url = href;
+    
+    /* get the ajax content */
+      var content = me.attr('data-ajax-content');
+      if(!content) content = 'body';
+      baseOptions.content = content;
 
-		/* get the target */
-			var target = me.attr('ajax-target');
-			if(!target) target = me.attr("target");
-			if(!target) target = "body";
-			baseOptions.target = target;
+    /* get the target */
+      var target = me.attr('data-ajax-target');
+      if(!target) target = me.attr("data-target");
+      if(!target) target = "body";
+      baseOptions.target = target;
 
-		/* get the title */
-			var title = me.attr('title');
-			if(!title) title=document.title;
-			baseOptions.title = title;
-		
-		/* get the status */
-			var status = $(target).attr('refresh-status');
-			if(!status) status=null;	
-			baseOptions.status = status;
+    /* get the title */
+      var title = me.attr('title');
+      if(!title) title=document.title;
+      baseOptions.title = title;
+    
+    /* get the status */
+      var status = $(target).attr('data-refresh-status');
+      if(!status) status=null;  
+      baseOptions.status = status;
 
-		/* get the insert method */
-			//TODO to delete there after, backward compatibility only
-			var insertFunction = me.attr('refresh-insert-function');
-			if(!insertFunction) insertFunction = me.attr('ajax-insert');
-			// /TODO
-			if(!insertFunction) insertFunction = me.attr('insert-function');
-			
-			if(!insertFunction) insertFunction=null;
-			baseOptions.insertFunction = insertFunction;
+    /* get the insert method */
+      //TODO to delete there after, backward compatibility only
+      var insertFunction = me.attr('data-refresh-insert-function');
+      if(!insertFunction) insertFunction = me.attr('data-ajax-insert');
+      // /TODO
+      if(!insertFunction) insertFunction = me.attr('data-insert-function');
+      
+      if(!insertFunction) insertFunction=null;
+      baseOptions.insertFunction = insertFunction;
 
-		options = $.extend(baseOptions,options); 
-		History.pushState(
-			{
-				target:options.target, 
-				content:options.content, 
-				insertFunction:options.insertFunction,
-				status:options.status,
-				clickedSelector:$(this).getSelector(),
-				html:options.html, 
-				customData : options.customData
-			}, 
-			options.title, options.url
-		);
-		
-		return false;
-	};
+    options = $.extend(baseOptions,options); 
+    History.pushState(
+      {
+        target:options.target, 
+        content:options.content, 
+        insertFunction:options.insertFunction,
+        status:options.status,
+        clickedSelector:$(this).getSelector(),
+        html:options.html, 
+        customData : options.customData
+      }, 
+      options.title, options.url
+    );
+    
+    return false;
+  };
 })(jQuery);
-
-/*
-$(document).ready(function() {
-	//normal use : 
-	$.navigate.init(); 
-	
-	//you can add these parameters  : 
-	//$.navigate.init({
-	//	active: any test you want returning a boolean (by default : Modernizr.history), 
-	//	ajaxLinks : 'any selector you want for your ajax links', 
-	//	defaultInsertFunction:'any jquery object attached function you want'
-	//});
-}); */
