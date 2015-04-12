@@ -70,7 +70,7 @@ jQuery.refresh = {
 		//WE REFRESH OR NOT
 		//----------------------------------------------------------------------
 		//check if we do have to refresh
-		var refreshFunction = target.attr("refresh-function");
+		var refreshFunction = target.attr("data-refresh-function");
 		if(typeof refreshFunction != "undefined") {
 			//SWITCH CONTENT
 			if(target[refreshFunction]) target[refreshFunction]();
@@ -88,11 +88,11 @@ jQuery.refresh = {
 				//3 - the current location
 			var targetUrl = options.url;
 			if(!targetUrl) {
-				var refreshUrl = target.attr("refresh-url");
+				var refreshUrl = target.attr("data-refresh-url");
 				if(refreshUrl) targetUrl = refreshUrl;
 				else targetUrl = window.location.href;
 			}
-			var myRefreshId = target.attr("refresh-id");
+			var myRefreshId = target.attr("data-refresh-id");
 			target.trigger({type:"startrefresh", clickedSelector:options.clickedSelector});
 			
 			var myDoneFunc = function(data) {
@@ -133,7 +133,7 @@ jQuery.refresh = {
 					var element=$(check);
 				}
 
-				var newRefreshId = element.attr("refresh-id");
+				var newRefreshId = element.attr("data-refresh-id");
 
 				if(myRefreshId && newRefreshId && myRefreshId==newRefreshId) {
 					target.trigger({type:"cancelrefresh", clickedSelector:options.clickedSelector});
@@ -163,16 +163,16 @@ jQuery.refresh = {
 				
 				//GET THE REFRESH INSERT METHOD
 				//TODO for backward compatibility, to delete thereafter
-				var insertFunction = target.attr('refresh-insert-function');
+				var insertFunction = target.attr('data-refresh-insert-function');
 				// /TODO
-				if(!insertFunction) insertFunction=target.attr('insert-function');
+				if(!insertFunction) insertFunction=target.attr('data-insert-function');
 				if(!insertFunction) insertFunction=options.insertFunction;//"html";
 				
 				//SWITCH CONTENT
 				target.off("finishrefreshinsert").one("finishrefreshinsert", function() {
 					//check status
-	    			var newRefreshStatus = element.attr("refresh-status");
-					var currentStatus = target.attr("refresh-status");
+	    			var newRefreshStatus = element.attr("data-refresh-status");
+					var currentStatus = target.attr("data-refresh-status");
 					if(newRefreshStatus && currentStatus != newRefreshStatus) {
 						target.trigger({
 							type:"refreshstatuschanged",
@@ -250,7 +250,7 @@ jQuery.refresh = {
 
 		//CHECK IF WE SET A REFRESH INTERVAL TIMER
 		//----------------------------------------------------------------------
-		var refreshTimerTime = target.attr('refresh-interval');
+		var refreshTimerTime = target.attr('data-refresh-interval');
 		if(!refreshTimerTime) return;
 		refreshTimerTime = parseInt(refreshTimerTime);
 		if(options.resetInterval && refreshTimerTime>0) {
@@ -385,7 +385,7 @@ jQuery.navigate = {
 	$.fn.discreteClick = function(){
 		var that = $(this);
 		if(that.attr("href") !="javascript://") {
-	    	that.attr("ajax-href", that.attr("href"));
+	    	that.attr("data-ajax-href", that.attr("href"));
 	    	that.attr("href", "javascript://");
 		}
 	};
@@ -405,7 +405,7 @@ jQuery.navigate = {
 		
 		/* get the href */
 			//cancel if this is a js link only
-			var href=me.attr('ajax-href');
+			var href=me.attr('data-ajax-href');
 			if(!href) href=me.attr('href');
 			
 			if(href =="javascript://") return true;
@@ -421,13 +421,13 @@ jQuery.navigate = {
 	   	 	baseOptions.url = href;
 		
 		/* get the ajax content */
-			var content = me.attr('ajax-content');
+			var content = me.attr('data-ajax-content');
 			if(!content) content = 'body';
 			baseOptions.content = content;
 
 		/* get the target */
-			var target = me.attr('ajax-target');
-			if(!target) target = me.attr("target");
+			var target = me.attr('data-ajax-target');
+			if(!target) target = me.attr("data-target");
 			if(!target) target = "body";
 			baseOptions.target = target;
 
@@ -437,16 +437,16 @@ jQuery.navigate = {
 			baseOptions.title = title;
 		
 		/* get the status */
-			var status = $(target).attr('refresh-status');
+			var status = $(target).attr('data-refresh-status');
 			if(!status) status=null;	
 			baseOptions.status = status;
 
 		/* get the insert method */
 			//TODO to delete there after, backward compatibility only
-			var insertFunction = me.attr('refresh-insert-function');
-			if(!insertFunction) insertFunction = me.attr('ajax-insert');
+			var insertFunction = me.attr('data-refresh-insert-function');
+			if(!insertFunction) insertFunction = me.attr('data-ajax-insert');
 			// /TODO
-			if(!insertFunction) insertFunction = me.attr('insert-function');
+			if(!insertFunction) insertFunction = me.attr('data-insert-function');
 			
 			if(!insertFunction) insertFunction=null;
 			baseOptions.insertFunction = insertFunction;
